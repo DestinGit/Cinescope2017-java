@@ -6,8 +6,7 @@
 package bdd;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -42,43 +41,38 @@ public class paysModel extends bddManager {
         this.disconnect();
     }
 
-    public String[] getData() {
+    public Map getData() {
         Connection lcn = this.connect();
-        ResultSet lrs = null;
-        String[] tEnrs = {};
-        List<String> liste = new ArrayList();
-        
-        String lsSQL = "SELECT * FROM pays";
+        Map<String, String> mapPays = new HashMap();
+
+        String lsSQL = "SELECT ID_pays, NOM_pays FROM pays";
         try {
             // --- Creation de l'objet "commande SQL"
             PreparedStatement lpst = lcn.prepareStatement(lsSQL);
-            lrs = lpst.executeQuery();
-            while(lrs.next()) {
-                liste.add(lrs.getString("NOM_pays"));
+            ResultSet lrs = lpst.executeQuery();
+            while (lrs.next()) {
+                mapPays.put(lrs.getString(2), lrs.getString(1));
             }
-            
-            tEnrs = liste.toArray(new String[liste.size()]);
-            
         } catch (SQLException e) {
             System.out.println("Erreur list : " + e.getMessage());
         }
-        
-        return tEnrs;
+
+        return mapPays;
     }
 
     public void deleteData(String pId) {
         Connection lcn = this.connect();
-        
-        String lsSQL = "DELETE FROM pays WHERE NOM_pays = ?";
+
+        String lsSQL = "DELETE FROM pays WHERE ID_pays = ?";
         try {
             // --- Creation de l'objet "commande SQL"
             PreparedStatement lpst = lcn.prepareStatement(lsSQL);
             lpst.setString(1, pId);
             lpst.executeUpdate();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Delete Exception : " + e.getMessage());
         }
-        
+
         this.disconnect();
     }
 

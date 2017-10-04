@@ -6,6 +6,8 @@
 package boundaries;
 
 import bdd.paysModel;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -15,21 +17,24 @@ import javax.swing.DefaultComboBoxModel;
 public class JIFPaysDelete extends javax.swing.JInternalFrame {
 
     private DefaultComboBoxModel idcbm;
+    private Map mapCountry;
 
     /**
      * Creates new form JIFPaysDelete
      */
-
     public JIFPaysDelete() {
         initComponents();
 
         idcbm = new DefaultComboBoxModel();
         paysModel pays = new paysModel();
+        Set<String> keyAllCountries;
 
-        String[] lrs = pays.getData();
-        for (String lr : lrs) {
+        mapCountry = pays.getData();
+
+        keyAllCountries = mapCountry.keySet();
+        keyAllCountries.stream().forEach((lr) -> {
             idcbm.addElement(lr);
-        }
+        });
 
         jComboBoxPays.setModel(idcbm);
 
@@ -48,6 +53,11 @@ public class JIFPaysDelete extends javax.swing.JInternalFrame {
         jComboBoxPays = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jLabel1.setText("Pays à supprimer ?");
 
@@ -90,8 +100,7 @@ public class JIFPaysDelete extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         paysModel pays = new paysModel();
-        
-        pays.deleteData(jComboBoxPays.getSelectedItem().toString());
+        pays.deleteData(mapCountry.get(jComboBoxPays.getSelectedItem()).toString());
 
         idcbm.removeElement(jComboBoxPays.getSelectedItem().toString());
     }//GEN-LAST:event_jButton1ActionPerformed
