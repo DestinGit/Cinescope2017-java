@@ -28,7 +28,9 @@ public class MDI extends javax.swing.JFrame {
 //        openMenuItemActionPerformed(null);
 //        saveMenuItemActionPerformed(null);
 //        supMenuItemActionPerformed(null);
-        delMenuItemActionPerformed(null);
+//        delMenuItemActionPerformed(null);
+        jMenuItem2ActionPerformed(null);
+        
         
     }
 

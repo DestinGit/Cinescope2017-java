@@ -6,17 +6,35 @@
 
 package boundaries;
 
+import bdd.paysModel;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author formation
  */
 public class JIFPaysModification extends javax.swing.JInternalFrame {
-
+    private DefaultComboBoxModel idcbm;
+    private Map mapCountry;
     /**
      * Creates new form JIFPaysModification
      */
     public JIFPaysModification() {
         initComponents();
+        idcbm = new DefaultComboBoxModel();
+        paysModel pays = new paysModel();
+        Set<String> keyAllCountries;
+
+        mapCountry = pays.getData();
+
+        keyAllCountries = mapCountry.keySet();
+        keyAllCountries.stream().forEach((lr) -> {
+            idcbm.addElement(lr);
+        });
+
+        jComboBoxPays.setModel(idcbm);
         
         setVisible(true);
     }
@@ -55,6 +73,11 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
         jLabel1.setText("Pays à modifier ?");
 
         jButtonValiderChoix.setText("Valider");
+        jButtonValiderChoix.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonValiderChoixActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("ID pays");
 
@@ -67,6 +90,11 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
         jLabel6.setText("Neutre");
 
         jButtonValiderModification.setText("Valider la modification");
+        jButtonValiderModification.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonValiderModificationActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Message");
 
@@ -148,6 +176,43 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonValiderChoixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValiderChoixActionPerformed
+        // TODO add your handling code here:
+        paysModel pays = new paysModel();
+        Map<String, String> mapSelectedCountry;
+        String id = (String)mapCountry.get(jComboBoxPays.getSelectedItem().toString());
+        mapSelectedCountry = pays.getOneData(id);
+        
+//        for (Map.Entry<String, String> entry : mapSelectedCountry.entrySet()) {
+//            String string = entry.getKey();
+//            String string1 = entry.getValue();
+//            System.out.println(string + ":" + string1);           
+//        }
+        
+        jTextFieldIDPays.setText(mapSelectedCountry.get("ID_pays").toString());
+        jTextFieldNomPays.setText(mapSelectedCountry.get("Nom_pays").toString());
+        jTextFieldNomMasculin.setText(mapSelectedCountry.get("MASCULIN").toString());
+        jTextFieldFeminin.setText(mapSelectedCountry.get("FEMININ").toString());
+        jTextFieldNomNeutre.setText(mapSelectedCountry.get("Neutre").toString());
+    }//GEN-LAST:event_jButtonValiderChoixActionPerformed
+
+    private void jButtonValiderModificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValiderModificationActionPerformed
+        // TODO add your handling code here:
+        paysModel pays = new paysModel();
+        String id = (String)mapCountry.get(jComboBoxPays.getSelectedItem().toString());
+        
+        pays.updateData(id, jTextFieldNomPays.getText().toString(), jTextFieldNomMasculin.getText().toString(), 
+                jTextFieldFeminin.getText().toString(), jTextFieldNomNeutre.getText().toString());
+        
+    }//GEN-LAST:event_jButtonValiderModificationActionPerformed
+
+    private void resetFields() {
+        jTextFieldIDPays.setText(null);
+        jTextFieldNomPays.setText(null);
+        jTextFieldNomMasculin.setText(null);
+        jTextFieldFeminin.setText(null);
+        jTextFieldNomNeutre.setText(null);        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonValiderChoix;
