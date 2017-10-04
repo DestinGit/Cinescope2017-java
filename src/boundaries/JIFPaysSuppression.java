@@ -6,6 +6,8 @@
 
 package boundaries;
 
+import bdd.paysModel;
+
 /**
  *
  * @author formation
@@ -26,6 +28,9 @@ public class JIFPaysSuppression extends javax.swing.JInternalFrame {
 	// Remplissage via un Array et setListData donc liste statique
 	String[] tPays = {"France", "Espagne", "Italie"};
 	jListPays.setListData(tPays);
+        
+        paysModel pays = new paysModel();
+        pays.getData();
         
         setVisible(true);
     }

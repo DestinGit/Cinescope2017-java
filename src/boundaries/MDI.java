@@ -27,7 +27,8 @@ public class MDI extends javax.swing.JFrame {
 
 //        openMenuItemActionPerformed(null);
 //        saveMenuItemActionPerformed(null);
-        supMenuItemActionPerformed(null);
+//        supMenuItemActionPerformed(null);
+        delMenuItemActionPerformed(null);
         
     }
 
@@ -48,6 +49,7 @@ public class MDI extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
         supMenuItem = new javax.swing.JMenuItem();
+        delMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -116,6 +118,14 @@ public class MDI extends javax.swing.JFrame {
             }
         });
         fileMenu.add(supMenuItem);
+
+        delMenuItem.setText("Pays (Delete)");
+        delMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(delMenuItem);
 
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
         saveMenuItem.setMnemonic('s');
@@ -371,6 +381,12 @@ public class MDI extends javax.swing.JFrame {
         this.desktopPane.add(jif);
     }//GEN-LAST:event_supMenuItemActionPerformed
 
+    private void delMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delMenuItemActionPerformed
+        // TODO add your handling code here:
+        JIFPaysDelete jif = new JIFPaysDelete();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_delMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -410,6 +426,7 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
+    private javax.swing.JMenuItem delMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;

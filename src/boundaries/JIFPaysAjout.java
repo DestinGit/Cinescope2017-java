@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package boundaries;
+
 import bdd.paysModel;
 
 /**
@@ -44,6 +44,7 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
         jTextFieldNomNeutre = new javax.swing.JTextField();
         jButtonAjouter = new javax.swing.JButton();
         jLabelMessage = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -76,36 +77,43 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
 
         jLabelMessage.setText("Message");
 
+        jLabel5.setText("Veuillez remplir tous les champs pour ajouter un pays");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonAjouter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelMessage)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextFieldNomPays)
-                                .addComponent(jTextFieldNomMasculin)
-                                .addComponent(jTextFieldNomFeminin)
-                                .addComponent(jTextFieldNomNeutre, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(120, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonAjouter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldNomPays)
+                                    .addComponent(jTextFieldNomMasculin)
+                                    .addComponent(jTextFieldNomFeminin)
+                                    .addComponent(jTextFieldNomNeutre, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelMessage))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelMessage)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldNomPays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -123,7 +131,7 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4))
                 .addGap(27, 27, 27)
                 .addComponent(jButtonAjouter)
-                .addGap(39, 39, 39))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -131,17 +139,24 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
 
     private void jButtonAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAjouterActionPerformed
         // TODO add your handling code here:
-        
-        paysModel pays = new paysModel();
-        
-        pays.insertData(jTextFieldNomPays.getText(), jTextFieldNomMasculin.getText(),
-                jTextFieldNomFeminin.getText(), jTextFieldNomNeutre.getText());
-      
-        jLabelMessage.setText("Le Pays " + jTextFieldNomPays.getText() + " a été rajouter avec succes");
-        
-        resetFields();
+        // test if there is an empty field
+        if (jTextFieldNomPays.getText().isEmpty() || jTextFieldNomMasculin.getText().isEmpty()
+                || jTextFieldNomFeminin.getText().isEmpty() || jTextFieldNomNeutre.getText().isEmpty()) {
+            
+            jLabelMessage.setText("Tous les champs sont obligatoires");
+            
+        } else { // No fields empty. Insertion in the database
+            paysModel pays = new paysModel();
+            
+            pays.insertData(jTextFieldNomPays.getText(), jTextFieldNomMasculin.getText(),
+                    jTextFieldNomFeminin.getText(), jTextFieldNomNeutre.getText());
+            
+            jLabelMessage.setText("Le Pays " + jTextFieldNomPays.getText() + " a été rajouter avec succes");
+            
+            resetFields();
+        }
     }//GEN-LAST:event_jButtonAjouterActionPerformed
-
+    
     private void resetFields() {
         jTextFieldNomPays.setText(null);
         jTextFieldNomMasculin.setText(null);
@@ -155,6 +170,7 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelMessage;
     private javax.swing.JTextField jTextFieldNomFeminin;
     private javax.swing.JTextField jTextFieldNomMasculin;
