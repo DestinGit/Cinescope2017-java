@@ -28,9 +28,8 @@ public class MDI extends javax.swing.JFrame {
 //        openMenuItemActionPerformed(null);
 //        saveMenuItemActionPerformed(null);
 //        supMenuItemActionPerformed(null);
-//        delMenuItemActionPerformed(null);
-        jMenuItem2ActionPerformed(null);
-        
+//        delMenuItemActionPerformed(null); 
+        transfertMenuItemActionPerformed(null);
         
     }
 
@@ -46,6 +45,7 @@ public class MDI extends javax.swing.JFrame {
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
         editMenu = new javax.swing.JMenu();
+        transfertMenuItem = new javax.swing.JMenuItem();
         copyMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         fileMenu = new javax.swing.JMenu();
@@ -53,7 +53,7 @@ public class MDI extends javax.swing.JFrame {
         supMenuItem = new javax.swing.JMenuItem();
         delMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        editMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -88,6 +88,14 @@ public class MDI extends javax.swing.JFrame {
 
         editMenu.setMnemonic('e');
         editMenu.setText("Fichier");
+
+        transfertMenuItem.setText("Transfert CSV 2 BD");
+        transfertMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transfertMenuItemActionPerformed(evt);
+            }
+        });
+        editMenu.add(transfertMenuItem);
 
         copyMenuItem.setMnemonic('y');
         copyMenuItem.setText("Se déconnecter");
@@ -139,14 +147,14 @@ public class MDI extends javax.swing.JFrame {
         });
         fileMenu.add(saveMenuItem);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
-        jMenuItem2.setText("Pays (Modification)");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        editMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
+        editMenuItem.setText("Pays (Modification)");
+        editMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                editMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem2);
+        fileMenu.add(editMenuItem);
         fileMenu.add(jSeparator1);
 
         jMenuItem3.setText("Arrondissements CRUD");
@@ -394,11 +402,17 @@ public class MDI extends javax.swing.JFrame {
         this.desktopPane.add(jif);
     }//GEN-LAST:event_delMenuItemActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void editMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editMenuItemActionPerformed
         // TODO add your handling code here:
         JIFPaysModification jif = new JIFPaysModification();
         this.desktopPane.add(jif);        
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_editMenuItemActionPerformed
+
+    private void transfertMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transfertMenuItemActionPerformed
+        // TODO add your handling code here:
+        JIFTransfertFile jif = new JIFTransfertFile();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_transfertMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -443,6 +457,7 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem editMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenu jMenu1;
@@ -453,7 +468,6 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
@@ -476,6 +490,7 @@ public class MDI extends javax.swing.JFrame {
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JMenuItem supMenuItem;
+    private javax.swing.JMenuItem transfertMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }

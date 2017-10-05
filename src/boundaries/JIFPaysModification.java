@@ -16,8 +16,10 @@ import javax.swing.DefaultComboBoxModel;
  * @author formation
  */
 public class JIFPaysModification extends javax.swing.JInternalFrame {
+
     private DefaultComboBoxModel idcbm;
     private Map mapCountry;
+
     /**
      * Creates new form JIFPaysModification
      */
@@ -26,14 +28,14 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
         idcbm = new DefaultComboBoxModel();
         paysModel pays = new paysModel();
         Set<String> keyAllCountries;
-
+        
         mapCountry = pays.getData();
-
+        
         keyAllCountries = mapCountry.keySet();
         keyAllCountries.stream().forEach((lr) -> {
             idcbm.addElement(lr);
         });
-
+        
         jComboBoxPays.setModel(idcbm);
         
         setVisible(true);
@@ -61,7 +63,7 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
         jTextFieldNomMasculin = new javax.swing.JTextField();
         jTextFieldFeminin = new javax.swing.JTextField();
         jTextFieldNomNeutre = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
+        jLabelMessage = new javax.swing.JLabel();
         jTextFieldIDPays = new javax.swing.JTextField();
 
         setClosable(true);
@@ -96,7 +98,7 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel7.setText("Message");
+        jLabelMessage.setText("Message");
 
         jTextFieldIDPays.setEditable(false);
         jTextFieldIDPays.setBackground(new java.awt.Color(255, 0, 0));
@@ -135,7 +137,7 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
                                             .addComponent(jTextFieldNomNeutre, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTextFieldIDPays, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(jButtonValiderModification, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabelMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -147,7 +149,7 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
                     .addComponent(jComboBoxPays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonValiderChoix))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7)
+                .addComponent(jLabelMessage)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -180,15 +182,14 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         paysModel pays = new paysModel();
         Map<String, String> mapSelectedCountry;
-        String id = (String)mapCountry.get(jComboBoxPays.getSelectedItem().toString());
+        String id = (String) mapCountry.get(jComboBoxPays.getSelectedItem().toString());
         mapSelectedCountry = pays.getOneData(id);
-        
+
 //        for (Map.Entry<String, String> entry : mapSelectedCountry.entrySet()) {
 //            String string = entry.getKey();
 //            String string1 = entry.getValue();
 //            System.out.println(string + ":" + string1);           
 //        }
-        
         jTextFieldIDPays.setText(mapSelectedCountry.get("ID_pays").toString());
         jTextFieldNomPays.setText(mapSelectedCountry.get("Nom_pays").toString());
         jTextFieldNomMasculin.setText(mapSelectedCountry.get("MASCULIN").toString());
@@ -199,13 +200,18 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
     private void jButtonValiderModificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValiderModificationActionPerformed
         // TODO add your handling code here:
         paysModel pays = new paysModel();
-        String id = (String)mapCountry.get(jComboBoxPays.getSelectedItem().toString());
-        
-        pays.updateData(id, jTextFieldNomPays.getText().toString(), jTextFieldNomMasculin.getText().toString(), 
-                jTextFieldFeminin.getText().toString(), jTextFieldNomNeutre.getText().toString());
+        String id = (String) mapCountry.get(jComboBoxPays.getSelectedItem().toString());
+        if (jTextFieldNomPays.getText().isEmpty() || jTextFieldNomMasculin.getText().isEmpty()
+                || jTextFieldFeminin.getText().isEmpty() || jTextFieldNomNeutre.getText().isEmpty()) {
+            jLabelMessage.setText("Tous les champs sont obligatoires");
+        } else {
+            pays.updateData(id, jTextFieldNomPays.getText().toString(), jTextFieldNomMasculin.getText().toString(),
+                    jTextFieldFeminin.getText().toString(), jTextFieldNomNeutre.getText().toString()); 
+            jLabelMessage.setText("Votre modification a été enregistrée");            
+        }
         
     }//GEN-LAST:event_jButtonValiderModificationActionPerformed
-
+    
     private void resetFields() {
         jTextFieldIDPays.setText(null);
         jTextFieldNomPays.setText(null);
@@ -224,7 +230,7 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelMessage;
     private javax.swing.JTextField jTextFieldFeminin;
     private javax.swing.JTextField jTextFieldIDPays;
     private javax.swing.JTextField jTextFieldNomMasculin;

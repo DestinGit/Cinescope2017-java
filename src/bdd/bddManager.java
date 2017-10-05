@@ -33,16 +33,17 @@ public class bddManager {
 
         lcn = null;
     }
-    
+
     /**
      * To connection to BDD
+     * @return 
      */
     public Connection connect() {
         String lsDSN = "jdbc:mysql://" + lsServer + ":" + lsPort + "/" + lsBD;
         try {
             lcn = DriverManager.getConnection(lsDSN, lsUt, lsMdp);
         } catch (SQLException e) {
-            System.out.println("connection failed");
+            System.out.println("connection failed : " + e.getMessage());
         }
         return lcn;
     }
@@ -51,6 +52,12 @@ public class bddManager {
      * To disconnect to BDD
      */
     public void disconnect() {
+        try {
+            lcn.close();
+        } catch (SQLException e) {
+            System.out.println("Disconnect : " + e.getMessage());
+        }
+        
         lcn = null;
     }
 

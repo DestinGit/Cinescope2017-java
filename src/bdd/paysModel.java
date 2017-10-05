@@ -45,7 +45,7 @@ public class paysModel extends bddManager {
         Connection lcn = this.connect();
         Map<String, String> mapPays = new HashMap();
 
-        String lsSQL = "SELECT ID_pays, NOM_pays FROM pays";
+        String lsSQL = "SELECT ID_pays, NOM_pays, MASCULIN, FEMININ, NEUTRE FROM pays";
         try {
             // --- Creation de l'objet "commande SQL"
             PreparedStatement lpst = lcn.prepareStatement(lsSQL);
@@ -53,6 +53,9 @@ public class paysModel extends bddManager {
             while (lrs.next()) {
                 mapPays.put(lrs.getString(2), lrs.getString(1));
             }
+            lrs.close();
+            lpst.close();
+            
         } catch (SQLException e) {
             System.out.println("Erreur list : " + e.getMessage());
         }
@@ -63,14 +66,52 @@ public class paysModel extends bddManager {
     }
 
     /**
+     * 
+     * @return 
+     */
+    public List<Map<String, String>> getAllData() {
+        Connection lcn = this.connect();
+
+        String lsSQL = "SELECT ID_pays, NOM_pays, MASCULIN, FEMININ, NEUTRE FROM pays";
+
+        List<Map<String, String>> listCountries = new ArrayList();
+
+        try {
+            // --- Creation de l'objet "commande SQL"
+            PreparedStatement lpst = lcn.prepareStatement(lsSQL);
+            ResultSet lrs = lpst.executeQuery();
+            while (lrs.next()) {
+                Map<String, String> mapPays = new HashMap();
+                mapPays.put("ID_pays", lrs.getString("ID_pays"));
+                mapPays.put("NOM_pays", lrs.getString("NOM_pays"));
+                mapPays.put("MASCULIN", lrs.getString("MASCULIN"));
+                mapPays.put("FEMININ", lrs.getString("FEMININ"));
+                mapPays.put("NEUTRE", lrs.getString("NEUTRE"));
+
+                listCountries.add(mapPays);
+            }
+            lrs.close();
+            lpst.close();
+           
+        } catch (SQLException e) {
+            System.out.println("Erreur list : " + e.getMessage());
+        }
+
+        this.disconnect();
+//        HashMap te = liste.toArray(new HashMap[liste.size()]);
+
+        return listCountries;
+    }
+
+    /**
      *
      * @param pId
      * @return
      */
     public Map<String, String> getOneData(String pId) {
-        
+
         System.out.println("id" + pId);
-        
+
         Connection lcn = this.connect();
 
         Map<String, String> mapPays = new HashMap();
@@ -90,6 +131,10 @@ public class paysModel extends bddManager {
                 mapPays.put("ID_Pays", "0");
                 mapPays.put("Nom_pays", "Introuvable");
             }
+            
+            lrs.close();
+            lpst.close();
+            
         } catch (SQLException e) {
             System.out.println("Select one exception : " + e.getMessage());
         }
@@ -99,7 +144,7 @@ public class paysModel extends bddManager {
         return mapPays;
     }
 
-        public void updateData(String id, String name, String nameMale, String nameFemale, String neutral) {
+    public void updateData(String id, String name, String nameMale, String nameFemale, String neutral) {
         Connection lcn = this.connect();
 
         String lsSQL = "UPDATE pays SET NOM_pays = ?, MASCULIN = ?, FEMININ = ?, NEUTRE = ? WHERE ID_pays = ? ";

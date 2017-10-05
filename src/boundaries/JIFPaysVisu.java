@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package boundaries;
+
+import bdd.paysModel;
 import java.sql.*;
+import java.util.List;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author formation
@@ -19,53 +23,25 @@ public class JIFPaysVisu extends javax.swing.JInternalFrame {
     public JIFPaysVisu() {
         initComponents();
 
-        
-        try {
-	Class.forName("org.gjt.mm.mysql.Driver");
-	Connection lcn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/cinescope2017", "root", "");
+        Object[] tLigne;
+        DefaultTableModel ldtm = (DefaultTableModel) jTablePays.getModel();
 
-	PreparedStatement lpst = lcn.prepareStatement("SELECT * FROM pays");
-	ResultSet lrs = lpst.executeQuery();
+        paysModel pays = new paysModel();
+        List<Map<String, String>> listCountries = pays.getAllData();
+        for (int i = 0; i < listCountries.size(); i++) {
+            tLigne = new Object[5];
+            Map<String, String> mapCountry = listCountries.get(i);
 
-	Object[] tLigne;
+            tLigne[0] = mapCountry.get("ID_pays");
+            tLigne[1] = mapCountry.get("NOM_pays");
+            tLigne[2] = mapCountry.get("MASCULIN");
+            tLigne[3] = mapCountry.get("FEMININ");
+            tLigne[4] = mapCountry.get("NEUTRE");
 
-	DefaultTableModel ldtm = (DefaultTableModel)jTablePays.getModel();
-
-	while(lrs.next()) {
-		tLigne = new Object[5];
-
-		tLigne[0] = lrs.getString(1);
-		tLigne[1] = lrs.getString(2);
-		tLigne[2] = lrs.getString(3);
-		tLigne[3] = lrs.getString(4);
-		tLigne[4] = lrs.getString(5);
-
-		ldtm.addRow(tLigne);
-	}
-
-	lrs.close();
-	lpst.close();
-	lcn.close();
-
-	jLabelMessage.setText("Jusque là tout va bien !!!");
-
-} catch (ClassNotFoundException | SQLException e) {
-	jLabelMessage.setText(e.getMessage());
-}
+            ldtm.addRow(tLigne);
+        }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        jLabelMessage.setText("il y'a " + listCountries.size() + " pays ");
         setVisible(true);
     }
 
