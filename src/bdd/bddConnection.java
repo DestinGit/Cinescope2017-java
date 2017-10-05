@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package bdd;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,11 +14,11 @@ import java.sql.SQLException;
  *
  * @author formation
  */
-public class Singleton implements Serializable {
+public class bddConnection {
     /**
      * Instance unique pré-initialisée
      */
-    private static Singleton INSTANCE = null;
+    private static bddConnection INSTANCE = null;
     
     /** Ma connexion **/
     private Connection lcn;
@@ -26,8 +26,7 @@ public class Singleton implements Serializable {
     /**
      * Constructeur privé
      */
-    private Singleton() {
-
+    private bddConnection() {
         // --- Pour une connexion MySQL native
         String lsServer = "127.0.0.1";
         String lsPort = "3306";
@@ -44,14 +43,18 @@ public class Singleton implements Serializable {
         }
     }
 
-    /**
-     * Point d'accès pour l'instance unique du singleton
-     */
-    public static Singleton getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Singleton();
+    public static bddConnection getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new bddConnection();
         }
         return INSTANCE;
     }
-
+    
+//    public void bddDisconnect() {
+//        try {
+//            lcn.close();
+//        } catch (SQLException e) {
+//            System.out.println("Disconnect : " + e.getMessage());
+//        }        
+//    }
 }
