@@ -12,15 +12,17 @@ import java.util.*;
  *
  * @author formation
  */
-public class paysModel extends bddManager {
-
+//public class paysModel extends bddManager {
+public class paysModel {
+    
     public paysModel() {
-        super();
+//        super();
     }
 
     public void insertData(String name, String nameMale, String nameFemale, String neutral) {
-        Connection lcn = this.connect();
-
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
+        
         String lsSQL = "INSERT INTO pays(NOM_pays, MASCULIN, FEMININ, NEUTRE) VALUES(?,?,?,?)";
         try {
             // --- Creation de l'objet "commande SQL"
@@ -38,11 +40,12 @@ public class paysModel extends bddManager {
             System.out.println("Erreur Insertion : " + e.getMessage());
         }
 
-        this.disconnect();
+//        this.disconnect();
     }
 
     public Map getData() {
-        Connection lcn = this.connect();
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
         Map<String, String> mapPays = new HashMap();
 
         String lsSQL = "SELECT ID_pays, NOM_pays, MASCULIN, FEMININ, NEUTRE FROM pays";
@@ -60,7 +63,7 @@ public class paysModel extends bddManager {
             System.out.println("Erreur list : " + e.getMessage());
         }
 
-        this.disconnect();
+//        this.disconnect();
 
         return mapPays;
     }
@@ -70,8 +73,9 @@ public class paysModel extends bddManager {
      * @return 
      */
     public List<Map<String, String>> getAllData() {
-        Connection lcn = this.connect();
-
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
+        
         String lsSQL = "SELECT ID_pays, NOM_pays, MASCULIN, FEMININ, NEUTRE FROM pays";
 
         List<Map<String, String>> listCountries = new ArrayList();
@@ -97,8 +101,7 @@ public class paysModel extends bddManager {
             System.out.println("Erreur list : " + e.getMessage());
         }
 
-        this.disconnect();
-//        HashMap te = liste.toArray(new HashMap[liste.size()]);
+//        this.disconnect();
 
         return listCountries;
     }
@@ -112,8 +115,9 @@ public class paysModel extends bddManager {
 
         System.out.println("id" + pId);
 
-        Connection lcn = this.connect();
-
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
+        
         Map<String, String> mapPays = new HashMap();
         String lsSQL = "SELECT * FROM pays WHERE ID_pays = ?";
         try {
@@ -139,13 +143,14 @@ public class paysModel extends bddManager {
             System.out.println("Select one exception : " + e.getMessage());
         }
 
-        this.disconnect();
+//        this.disconnect();
 
         return mapPays;
     }
 
     public void updateData(String id, String name, String nameMale, String nameFemale, String neutral) {
-        Connection lcn = this.connect();
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
 
         String lsSQL = "UPDATE pays SET NOM_pays = ?, MASCULIN = ?, FEMININ = ?, NEUTRE = ? WHERE ID_pays = ? ";
         try {
@@ -165,7 +170,7 @@ public class paysModel extends bddManager {
             System.out.println("Erreur Insertion : " + e.getMessage());
         }
 
-        this.disconnect();
+//        this.disconnect();
     }
 
     /**
@@ -173,8 +178,9 @@ public class paysModel extends bddManager {
      * @param pId
      */
     public void deleteData(String pId) {
-        Connection lcn = this.connect();
-
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
+        
         String lsSQL = "DELETE FROM pays WHERE ID_pays = ?";
         try {
             // --- Creation de l'objet "commande SQL"
@@ -185,7 +191,7 @@ public class paysModel extends bddManager {
             System.out.println("Delete Exception : " + e.getMessage());
         }
 
-        this.disconnect();
+//        this.disconnect();
     }
 
 }

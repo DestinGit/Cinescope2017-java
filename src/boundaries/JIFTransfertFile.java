@@ -6,13 +6,11 @@
 package boundaries;
 
 import bdd.metroModel;
+import fileManager.CSV2BD;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import fileManager.ratpFile;
 
 /**
@@ -93,13 +91,16 @@ public class JIFTransfertFile extends javax.swing.JInternalFrame {
 
     private void jButtonTransfertFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfertFileActionPerformed
         // TODO add your handling code here:
-        String fileName = jTextFieldFileName.getText().toString() + ".csv";
         jLabelMessage.setText("Transfert en cours ... Merci de patienter");
-        
+//        String fileName = jTextFieldFileName.getText().toString() + ".csv";
         // Création du fichier tempo qui supprime les doublons
-        String newFile = ratpFile.cleanDuplicatesData(fileName);
-
-        insertDataOnDB(newFile);
+//        String newFile = ratpFile.cleanDuplicatesData(fileName);
+//        insertDataOnDB(newFile);
+        
+        String fileName = jTextFieldFileName.getText().toString();
+//        insertDataOnDB(fileName);
+        CSV2BD.CSV2BD(fileName);
+        jLabelMessage.setText("Transfert terminé");
     }//GEN-LAST:event_jButtonTransfertFileActionPerformed
 
     /**
@@ -138,9 +139,9 @@ public class JIFTransfertFile extends javax.swing.JInternalFrame {
 
             }
             // Supprimer le fichier tempo
-            f.delete();
+//            f.delete();
             // Déconnection de la BD
-            metro.disconnect();
+//            metro.disconnect();
             
         }
         jLabelMessage.setText("Transfert terminé");

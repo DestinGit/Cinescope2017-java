@@ -21,6 +21,7 @@ public class MDI extends javax.swing.JFrame {
     public MDI() {
         initComponents();
 
+        
         setTitle("MDI - Cinéscope 2017");
         setLocationRelativeTo(null);
         setVisible(true);

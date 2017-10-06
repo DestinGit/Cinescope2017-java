@@ -5,22 +5,23 @@
  */
 package bdd;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  *
  * @author formation
  */
-public class metroModel extends bddManager {
+//public class metroModel extends bddManager {
+public class metroModel {
 
     public metroModel() {
-        super();
+//        super();
     }
     
     public void insertData(String name, String lat, String lng) {
-        Connection lcn = this.connect();
+//        Connection lcn = this.connect();
+        Connection lcn = bddConnection.getInstance();
+        
         String lsSQL = "INSERT INTO station_metro(NOM_station_metro, lat, lng) VALUES(?,?,?)";
         
         try{
