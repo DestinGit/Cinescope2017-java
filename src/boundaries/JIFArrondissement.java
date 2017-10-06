@@ -23,11 +23,12 @@ import javax.swing.table.DefaultTableModel;
 public class JIFArrondissement extends javax.swing.JInternalFrame {
 
     private Connection icnx;
-    private DefaultTableModel dtm;
+    private DefaultTableModel idtm;
 
     private JLabel[] tJLabels;
     private JTextField[] tJTexts;
     
+    private Object[] tEntetes = null;
     /**
      * Creates new form JIFArrondissement
      */
@@ -36,7 +37,7 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
         
         icnx = Globale.getCnx();
 
-        Object[] tEntetes = null;
+        
         Object[][] tDataTable = null;
         Object[] tDataLigne = null;
         PreparedStatement lpst = null;
@@ -45,7 +46,7 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
         try {
             // --- Connexion a la BD
 
-            lpst = icnx.prepareStatement("SELECT * FROM arrondissement", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            lpst = icnx.prepareStatement("SELECT * FROM pays", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             lrs = lpst.executeQuery();
 
             // --- Recuperation de la structure du curseur
@@ -84,8 +85,8 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
             }
 
             // --- Affectation des tableaux d'objets a la JTable
-            dtm = new DefaultTableModel(tDataTable, tEntetes);
-            jTableArrondissement.setModel(dtm);
+            idtm = new DefaultTableModel(tDataTable, tEntetes);
+            jTableArrondissement.setModel(idtm);
 
             // Fermetures
             lrs.close();
@@ -141,6 +142,10 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
         jTableArrondissement = new javax.swing.JTable();
         jLabelMessage = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jButtonCLS = new javax.swing.JButton();
+        jButtonAdd = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jButtonUpdate = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -165,6 +170,8 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
 
         jLabelMessage.setText("jLabel1");
 
+        jPanel1.setBackground(new java.awt.Color(102, 153, 255));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,8 +180,36 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 123, Short.MAX_VALUE)
         );
+
+        jButtonCLS.setText("CLS");
+        jButtonCLS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCLSActionPerformed(evt);
+            }
+        });
+
+        jButtonAdd.setText("Ajouter");
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddActionPerformed(evt);
+            }
+        });
+
+        jButtonDelete.setText("Supprimer");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+
+        jButtonUpdate.setText("Modifier");
+        jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,21 +218,36 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelMessage)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 798, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelMessage)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonCLS)
+                                .addGap(55, 55, 55)
+                                .addComponent(jButtonAdd)
+                                .addGap(65, 65, 65)
+                                .addComponent(jButtonDelete)
+                                .addGap(54, 54, 54)
+                                .addComponent(jButtonUpdate)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCLS)
+                    .addComponent(jButtonAdd)
+                    .addComponent(jButtonDelete)
+                    .addComponent(jButtonUpdate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelMessage)
                 .addContainerGap())
         );
@@ -213,8 +263,48 @@ public class JIFArrondissement extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTableArrondissementMouseClicked
 
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        // TODO add your handling code here:
+        String[] tNew = new String[tEntetes.length];
+        for(int i = 0; i < tNew.length; i++) {
+            tNew[i] = tJTexts[i].getText().toString();
+        }
+        
+        idtm.addRow(tNew);
+    }//GEN-LAST:event_jButtonAddActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        // TODO add your handling code here:
+        int liRow = jTableArrondissement.getSelectedRow();
+        if(liRow >= 0) {
+            idtm.removeRow(liRow);
+        } else {
+            jLabelMessage.setText("fdfsd fsdf");
+        }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
+        // TODO add your handling code here:
+        int liRow = jTableArrondissement.getSelectedRow();
+        for(int i = 0; i < tJTexts.length; i++) {
+            idtm.setValueAt(tJTexts[i].getText().toString(), liRow, i);
+        }
+    }//GEN-LAST:event_jButtonUpdateActionPerformed
+
+    private void jButtonCLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCLSActionPerformed
+        // TODO add your handling code here:
+        for (int i = 0; i < tJTexts.length; i++) {
+            tJTexts[i].setText("");
+        }
+        tJTexts[0].requestFocus();        
+    }//GEN-LAST:event_jButtonCLSActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAdd;
+    private javax.swing.JButton jButtonCLS;
+    private javax.swing.JButton jButtonDelete;
+    private javax.swing.JButton jButtonUpdate;
     private javax.swing.JLabel jLabelMessage;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
