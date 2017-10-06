@@ -5,8 +5,13 @@
  */
 package boundaries;
 
+import connexion.Connexion;
+import daos.Globale;
+import java.awt.Frame;
 import java.beans.PropertyVetoException;
+import java.sql.Connection;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
 /**
@@ -14,7 +19,7 @@ import javax.swing.JInternalFrame;
  * @author formation
  */
 public class MDI extends javax.swing.JFrame {
-
+    private Connection icnx;
     /**
      * Creates new form MDI
      */
@@ -24,13 +29,17 @@ public class MDI extends javax.swing.JFrame {
         
         setTitle("MDI - Cinéscope 2017");
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
 
+         icnx = Connexion.getConnectionMySQL("mysql-yemeialways.alwaysdata.net", "yemeialways_cine2017", "3306", "143657", "YemeiAlways@01");
+         Globale.setCnx(icnx);
+         
 //        openMenuItemActionPerformed(null);
 //        saveMenuItemActionPerformed(null);
 //        supMenuItemActionPerformed(null);
 //        delMenuItemActionPerformed(null); 
-        transfertMenuItemActionPerformed(null);
+//        transfertMenuItemActionPerformed(null);
         
     }
 
@@ -86,6 +95,11 @@ public class MDI extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         editMenu.setMnemonic('e');
         editMenu.setText("Fichier");
@@ -159,6 +173,11 @@ public class MDI extends javax.swing.JFrame {
         fileMenu.add(jSeparator1);
 
         jMenuItem3.setText("Arrondissements CRUD");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         fileMenu.add(jMenuItem3);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
@@ -414,6 +433,17 @@ public class MDI extends javax.swing.JFrame {
         JIFTransfertFile jif = new JIFTransfertFile();
         this.desktopPane.add(jif);
     }//GEN-LAST:event_transfertMenuItemActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        JIFArrondissement jif = new JIFArrondissement();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        Connexion.disconnection(icnx);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
