@@ -213,6 +213,11 @@ public class MDI extends javax.swing.JFrame {
         fileMenu.add(jSeparator5);
 
         jMenuItem12.setText("Générique (CRUD)");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         fileMenu.add(jMenuItem12);
 
         menuBar.add(fileMenu);
@@ -444,6 +449,12 @@ public class MDI extends javax.swing.JFrame {
         // TODO add your handling code here:
         Connexion.disconnection(icnx);
     }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+        JIFGeneriqueNouveauStyle jif = new JIFGeneriqueNouveauStyle("pays");
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**
      * @param args the command line arguments
