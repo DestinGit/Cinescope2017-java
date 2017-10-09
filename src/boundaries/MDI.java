@@ -32,7 +32,8 @@ public class MDI extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
 
-         icnx = Connexion.getConnectionMySQL("mysql-yemeialways.alwaysdata.net", "yemeialways_cine2017", "3306", "143657", "YemeiAlways@01");
+//         icnx = Connexion.getConnectionMySQL("mysql-yemeialways.alwaysdata.net", "yemeialways_cine2017", "3306", "143657", "YemeiAlways@01");
+         icnx = Connexion.getConnectionMySQL("127.0.0.1", "cinescope2017", "3306", "root", "");
          Globale.setCnx(icnx);
          
 //        openMenuItemActionPerformed(null);
