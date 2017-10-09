@@ -12,11 +12,13 @@ Tous sauf si certains attributs sont en RO le dérivé ou frozen
 
 package entities;
 
+import java.io.Serializable;
+
 /**
  *
  * @author formation
  */
-public class Departement {
+public class Departement implements Serializable{
     /**
      * ATTRIBUTS
      */
