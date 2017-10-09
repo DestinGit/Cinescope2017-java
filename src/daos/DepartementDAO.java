@@ -29,6 +29,7 @@ public class DepartementDAO {
             lpst.setString(2, d.getNomDepartement());
             liAffecte = lpst.executeUpdate();
             icnx.commit();
+            lpst.close();
         } catch (SQLException e) {
             liAffecte = -1;
             System.out.println("erreu INSERT : " + e.getMessage());
