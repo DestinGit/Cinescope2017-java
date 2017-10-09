@@ -27,7 +27,7 @@ public class DepartementDAO {
             PreparedStatement lpst = icnx.prepareStatement(lsSQL);
             lpst.setString(1, d.getCodeDepartement());
             lpst.setString(2, d.getNomDepartement());
-            lpst.executeUpdate();
+            liAffecte = lpst.executeUpdate();
             icnx.commit();
         } catch (SQLException e) {
             liAffecte = -1;
