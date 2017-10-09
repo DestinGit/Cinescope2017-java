@@ -31,7 +31,7 @@ public class DepartementDAO {
         int liAffecte;
         try {
             String lsSQL = "INSERT INTO departement(code_departement, nom_departement) VALUES (?,?)";
-            PreparedStatement lpst = icnx.prepareStatement(lsSQL);
+            PreparedStatement lpst = icnx.prepareStatement(lsSQL, Statement.RETURN_GENERATED_KEYS);
             lpst.setString(1, d.getCodeDepartement());
             lpst.setString(2, d.getNomDepartement());
             liAffecte = lpst.executeUpdate();
@@ -45,6 +45,17 @@ public class DepartementDAO {
         return liAffecte;
     } //insert
 
+//    public int getLastInsert() {
+//        int res = 0;
+//        String lsSQL = "SELECT LAST_INSERT_ID()";
+//        try{
+//            
+//        } catch (SQLException e) {
+//            res = -1;
+//            System.out.println("erreu INSERT : " + e.getMessage());
+//        }
+//        return res;
+//    }
     /**
      *
      * @param d
@@ -66,6 +77,7 @@ public class DepartementDAO {
                 lpst.close();
             }
         } catch (SQLException e) { // Exécution quand une exception est levée
+            liAffecte = -1;
             System.out.println("DELETE : " + e.getMessage());
         }
         return liAffecte;
@@ -169,6 +181,7 @@ public class DepartementDAO {
             icnx.commit();
             lpst.close();
         } catch (SQLException e) { // Si l'exception est levée
+            liAffecte = -1;
             System.out.println("UPDATE : " + e.getMessage());
         }
 
