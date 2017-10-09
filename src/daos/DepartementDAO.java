@@ -88,10 +88,13 @@ public class DepartementDAO {
             ResultSet lrs = lpst.executeQuery();
             // test si resultat existe. Si oui, initialiser l'objet Departement
             if (lrs.next()) {
+//                d = new Departement(id, lrs.getString("code_departement"),
+//                lrs.getString("nom_departement"));
                 d.setIdDepartement(id);
                 d.setCodeDepartement(lrs.getString("code_departement"));
                 d.setNomDepartement(lrs.getString("nom_departement"));
             } else { // Si non, initialiser l'objet Departement avec les valeurs par défaut
+//                d = new Departement(0, "INTROUVALE", "INTROUVALE");
                 d.setIdDepartement(0);
                 d.setCodeDepartement("INTROUVALE");
                 d.setNomDepartement("INTROUVALE");
