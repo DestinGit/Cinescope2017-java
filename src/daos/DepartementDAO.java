@@ -120,10 +120,12 @@ public class DepartementDAO {
             ResultSet lrs = lpst.executeQuery();
             // Lecture des datas
             while (lrs.next()) {
-                Departement d = new Departement();
-                d.setIdDepartement(lrs.getInt("id_departement"));
-                d.setCodeDepartement(lrs.getString("code_departement"));
-                d.setNomDepartement(lrs.getString("nom_departement"));
+                Departement d = new Departement(lrs.getInt("id_departement"),
+                        lrs.getString("code_departement"),
+                        lrs.getString("nom_departement"));
+//                d.setIdDepartement(lrs.getInt("id_departement"));
+//                d.setCodeDepartement(lrs.getString("code_departement"));
+//                d.setNomDepartement(lrs.getString("nom_departement"));
                 // Sauvegarde des datas dans une liste
                 resultList.add(d);
             }
@@ -133,6 +135,8 @@ public class DepartementDAO {
             lpst.close();
         } catch (SQLException e) { // Exécution quand une exception est levée
             System.out.println("SELECT ALL : " + e.getMessage());
+            Departement d = new Departement(-1, null, null);
+            resultList.add(d);
         }
 
         // renvoi de la liste des résultats (une list d'objets)
