@@ -35,7 +35,7 @@ public class DepartementDAO {
             lpst.setString(1, d.getCodeDepartement());
             lpst.setString(2, d.getNomDepartement());
             liAffecte = lpst.executeUpdate();
-            icnx.commit();
+//            icnx.commit();
             lpst.close();
         } catch (SQLException e) {
             liAffecte = -1;
@@ -72,7 +72,7 @@ public class DepartementDAO {
                 // Exécution de la requête
                 liAffecte = lpst.executeUpdate();
                 // Validation de l'exécution
-                icnx.commit();
+//                icnx.commit();
                 // fermeture du pointeur
                 lpst.close();
             }
@@ -178,7 +178,7 @@ public class DepartementDAO {
             // Exécution de la requete
             liAffecte = lpst.executeUpdate();
             // Valider l'exécution
-            icnx.commit();
+//            icnx.commit();
             lpst.close();
         } catch (SQLException e) { // Si l'exception est levée
             liAffecte = -1;

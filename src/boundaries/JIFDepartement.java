@@ -9,6 +9,7 @@ import daos.DepartementDAO;
 import daos.Globale;
 import entities.Departement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,8 +28,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
      */
     public JIFDepartement() {
         initComponents();
-        ldtm = (DefaultTableModel)jTableDepartement.getModel();
-        
+        ldtm = (DefaultTableModel) jTableDepartement.getModel();
+
         icnx = Globale.getCnx();
         Object[] tLigne = new Object[3];
         // Récupérer tous les départements
@@ -38,10 +39,9 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
             tLigne[0] = rs.getIdDepartement();
             tLigne[1] = rs.getCodeDepartement();
             tLigne[2] = rs.getNomDepartement();
-            
+
             ldtm.addRow(tLigne);
         });
-        
 
         setVisible(true);
     }
@@ -85,6 +85,11 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
         jTableDepartement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableDepartementMouseClicked(evt);
+            }
+        });
+        jTableDepartement.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTableDepartementKeyReleased(evt);
             }
         });
         jScrollPane1.setViewportView(jTableDepartement);
@@ -187,59 +192,111 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jTableDepartementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableDepartementMouseClicked
         // TODO add your handling code here:
         int liRow = jTableDepartement.getSelectedRow();
-        for(int i = 0; i < jTableDepartement.getColumnCount(); i++) {
+        for (int i = 0; i < jTableDepartement.getColumnCount(); i++) {
             jLabelID.setText(jTableDepartement.getValueAt(liRow, 0).toString());
             jTextFieldCode.setText(jTableDepartement.getValueAt(liRow, 1).toString());
             jTextFieldNom.setText(jTableDepartement.getValueAt(liRow, 2).toString());
         }
     }//GEN-LAST:event_jTableDepartementMouseClicked
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
         int id;
         id = Integer.valueOf(jLabelID.getText().toString());
-        
-        Departement d = new Departement(id,jTextFieldCode.getText().toString(),
+
+        Departement d = new Departement(id, jTextFieldCode.getText().toString(),
                 jTextFieldNom.getText().toString());
-        
-        dao.update(d);
-        
-        int liRow = jTableDepartement.getSelectedRow();
-        jTableDepartement.setValueAt(jTextFieldCode.getText().toString(), liRow, 1);
-        jTableDepartement.setValueAt(jTextFieldNom.getText().toString(), liRow, 2);
+
+        int r = dao.update(d);
+        if (r > 0) {
+            try {
+                // Valider l'exécution
+                icnx.commit();
+                // Maj du tableau
+                int liRow = jTableDepartement.getSelectedRow();
+                jTableDepartement.setValueAt(jTextFieldCode.getText().toString(), liRow, 1);
+                jTableDepartement.setValueAt(jTextFieldNom.getText().toString(), liRow, 2);
+                
+                jButtonCLSActionPerformed(null);
+                
+            } catch (SQLException e) {
+                System.out.println("Ins + lose : " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
         // TODO add your handling code here:
         Departement d = new Departement(jTextFieldCode.getText().toString(),
                 jTextFieldNom.getText().toString());
-        
+
         int r = dao.insert(d);
-        
-        Object[] tLigne = new Object[3];
-        tLigne[0]= r;
-        tLigne[1] = jTextFieldCode.getText().toString();
-        tLigne[2] = jTextFieldNom.getText().toString();
-        ldtm.addRow(tLigne);
-        
+        if (r > 0) {
+            try {
+                // Valider l'exécution
+                icnx.commit();
+                // Maj du tableau (jDableDepartement)
+                Object[] tLigne = new Object[3];
+                tLigne[0] = r;
+                tLigne[1] = jTextFieldCode.getText().toString();
+                tLigne[2] = jTextFieldNom.getText().toString();
+                ldtm.addRow(tLigne);
+                
+                jButtonCLSActionPerformed(null);
+                
+            } catch (SQLException e) {
+                System.out.println("Ins + lose : " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         // TODO add your handling code here:
         int id;
         id = Integer.valueOf(jLabelID.getText().toString());
-        Departement d = new Departement(id,jTextFieldCode.getText().toString(),
+        Departement d = new Departement(id, jTextFieldCode.getText().toString(),
                 jTextFieldNom.getText().toString());
-        
-        dao.delete(d);
-        
-        int liRow = jTableDepartement.getSelectedRow();
-        ldtm.removeRow(liRow);
+
+        int r = dao.delete(d);
+        if (r > 0) {
+            try {
+                // Validation de l'exécution
+                icnx.commit();
+                // Maj de la jTableDepartement
+                int liRow = jTableDepartement.getSelectedRow();
+                ldtm.removeRow(liRow);
+                
+                jButtonCLSActionPerformed(null);
+                
+            } catch (SQLException e) {
+                System.out.println("Del + lose : " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonCLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCLSActionPerformed
         // TODO add your handling code here:
         jLabelID.setText(null);
@@ -247,6 +304,14 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
         jTextFieldNom.setText(null);
     }//GEN-LAST:event_jButtonCLSActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
+    private void jTableDepartementKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableDepartementKeyReleased
+        // TODO add your handling code here:
+        jTableDepartementMouseClicked(null);
+    }//GEN-LAST:event_jTableDepartementKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCLS;
