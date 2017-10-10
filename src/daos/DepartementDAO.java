@@ -64,10 +64,10 @@ public class DepartementDAO {
     public int delete(Departement d) {
         int liAffecte = 0;
         try {
-            String lsSQL = "DELETE FROM departement WHERE id_departement = ?";
+            String lsSQL = "CALL departementDelete(?)";
             // Préparation de la requete
             try (PreparedStatement lpst = icnx.prepareStatement(lsSQL)) {
-                //  Valorisation de la varibla
+                //  Valorisation de la variable
                 lpst.setInt(1, d.getIdDepartement());
                 // Exécution de la requête
                 liAffecte = lpst.executeUpdate();
@@ -127,7 +127,7 @@ public class DepartementDAO {
     public List<Departement> selectAll() {
         List<Departement> resultList = new ArrayList();
 
-        String lsSQL = "SELECT * FROM departement";
+        String lsSQL = "CALL departementSelectAll()";
         try {
             // Préparation de la requete
             PreparedStatement lpst = icnx.prepareStatement(lsSQL);
