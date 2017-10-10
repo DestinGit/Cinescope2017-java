@@ -193,8 +193,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jTableDepartementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableDepartementMouseClicked
         // TODO add your handling code here:
@@ -207,8 +207,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTableDepartementMouseClicked
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
@@ -237,8 +237,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButtonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertActionPerformed
         // TODO add your handling code here:
@@ -256,9 +256,9 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
                 tLigne[1] = jTextFieldCode.getText().toString();
                 tLigne[2] = jTextFieldNom.getText().toString();
                 ldtm.addRow(tLigne);
-                
+
                 jButtonCLSActionPerformed(null);
-                
+
             } catch (SQLException e) {
                 System.out.println("Ins + lose : " + e.getMessage());
             }
@@ -266,8 +266,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         // TODO add your handling code here:
@@ -284,9 +284,9 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
                 // Maj de la jTableDepartement
                 int liRow = jTableDepartement.getSelectedRow();
                 ldtm.removeRow(liRow);
-                
+
                 jButtonCLSActionPerformed(null);
-                
+
             } catch (SQLException e) {
                 System.out.println("Del + lose : " + e.getMessage());
             }
@@ -294,8 +294,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButtonCLSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCLSActionPerformed
         // TODO add your handling code here:
@@ -305,8 +305,8 @@ public class JIFDepartement extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonCLSActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jTableDepartementKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableDepartementKeyReleased
         // TODO add your handling code here:

@@ -22,6 +22,23 @@ public class DepartementDAO {
         this.icnx = icnx;
     }
 
+//    public void commit() {
+//        try {
+//            icnx.commit();
+//        } catch (SQLException e) {
+//            rollback();
+//            System.out.println("erreur COMMIT : " + e.getMessage());
+//        }
+//    }
+//
+//    public void rollback() {
+//        try {
+//            icnx.rollback();
+//        } catch (SQLException e) {
+//            System.out.println("erreur ROLLBACK : " + e.getMessage());
+//        }
+//    }
+
     /**
      *
      * @param d
