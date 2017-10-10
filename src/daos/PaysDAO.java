@@ -5,7 +5,7 @@
  */
 package daos;
 
-import entities.Genre;
+import entities.Pays;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,27 +14,28 @@ import java.util.List;
  *
  * @author formation
  */
-public class GenreDAO implements IDAO<Genre> {
+public class PaysDAO implements IDAO<Pays> {
 
     private Connection cnx;
 
-    public GenreDAO(Connection cnx) {
+    public PaysDAO(Connection cnx) {
         this.cnx = cnx;
     }
-
+    
     @Override
-    public int insert(Genre objet) {
+    public int insert(Pays objet) {
         int liAffecte = 0;
 
-        String lsInsert = "CALL genreInsert(?,?,?)";
+        String lsInsert = "INSERT INTO pays(NOM_pays, MASCULIN, FEMININ, NEUTRE) VALUES(?,?,?,?)";
 
         try {
             // Preparation de la requête
             PreparedStatement pst = this.cnx.prepareStatement(lsInsert);
             // valorisation des variables
-            pst.setString(1, objet.getCodeGenre());
-            pst.setString(2, objet.getLibelleGenre());
-            pst.setString(3, objet.getGenreGrammatical());
+            pst.setString(1, objet.getNomPays());
+            pst.setString(2, objet.getMasculin());
+            pst.setString(3, objet.getFeminin());
+            pst.setString(4, objet.getNeutre());
             // Exécution de la requête
             liAffecte = pst.executeUpdate();
             // Fermeture du PreparedStatement
@@ -49,10 +50,10 @@ public class GenreDAO implements IDAO<Genre> {
     }
 
     @Override
-    public List<Genre> selectAll() {
-        List<Genre> resultList = new ArrayList();
+    public List<Pays> selectAll() {
+        List<Pays> resultList = new ArrayList();
 
-        String lsSQL = "CALL genreSelectAll()";
+        String lsSQL = "CALL paysSelectAll()";
         try {
             // Préparation de la requete
             PreparedStatement lpst = cnx.prepareStatement(lsSQL);
@@ -60,8 +61,8 @@ public class GenreDAO implements IDAO<Genre> {
             ResultSet lrs = lpst.executeQuery();
             // Lecture des datas
             while (lrs.next()) {
-                Genre g = new Genre(lrs.getInt("ID_genre"), lrs.getString("CODE_genre"),
-                        lrs.getString("LIBELLE_genre"), lrs.getString("genre_GRAMMATICAL"));
+                Pays g = new Pays(lrs.getInt("ID_pays"), lrs.getString("NOM_pays"),
+                        lrs.getString("MASCULIN"), lrs.getString("FEMININ"), lrs.getString("NEUTRE"));
                 resultList.add(g);
             }
 
@@ -70,7 +71,7 @@ public class GenreDAO implements IDAO<Genre> {
             lpst.close();
         } catch (SQLException e) { // Exécution quand une exception est levée
             System.out.println("SELECT ALL : " + e.getMessage());
-            Genre d = new Genre(-1, null, null, null);
+            Pays d = new Pays(-1, null, null, null, null);
             resultList.add(d);
         }
 
@@ -79,9 +80,9 @@ public class GenreDAO implements IDAO<Genre> {
     }
 
     @Override
-    public Genre selectOne(int id) {
-        Genre d = new Genre();
-        String lsSQL = "CALL genreSelectOne(?)";
+    public Pays selectOne(int id) {
+        Pays d = new Pays();
+        String lsSQL = "SELECT * FROM pays WHERE ID_pays = ?";
         try {
             // Préparation de la requete
             PreparedStatement lpst = cnx.prepareStatement(lsSQL);
@@ -91,15 +92,17 @@ public class GenreDAO implements IDAO<Genre> {
             ResultSet lrs = lpst.executeQuery();
             // test si resultat existe. Si oui, initialiser l'objet Departement
             if (lrs.next()) {
-                d.setIdGenre(id);
-                d.setCodeGenre(lrs.getString("CODE_genre"));
-                d.setLibelleGenre(lrs.getString("LIBELLE_genre"));
-                d.setGenreGrammatical(lrs.getString("genre_GRAMMATICAL"));
+                d.setIdPays(id);
+                d.setNomPays(lrs.getString("NOM_pays"));
+                d.setMasculin(lrs.getString("MASCULIN"));
+                d.setFeminin(lrs.getString("FEMININ"));
+                d.setNeutre(lrs.getString("NEUTRE"));
             } else { // Si non, initialiser l'objet Departement avec les valeurs par défaut
-                d.setIdGenre(0);
-                d.setCodeGenre(null);
-                d.setLibelleGenre(null);
-                d.setGenreGrammatical(null);
+                d.setIdPays(0);
+                d.setNomPays(null);
+                d.setMasculin(null);
+                d.setFeminin(null);
+                d.setNeutre(null);
             }
             // Fermeture des pointeurs
             lrs.close();
@@ -111,14 +114,14 @@ public class GenreDAO implements IDAO<Genre> {
     }
 
     @Override
-    public int delete(Genre objet) {
+    public int delete(Pays objet) {
         int liAffecte = 0;
         try {
-            String lsSQL = "CALL genreDelete(?)";
+            String lsSQL = "DELETE FROM pays WHERE ID_pays = ?";
             // Préparation de la requete
             try (PreparedStatement lpst = cnx.prepareStatement(lsSQL)) {
                 //  Valorisation de la variable
-                lpst.setInt(1, objet.getIdGenre());
+                lpst.setInt(1, objet.getIdPays());
                 // Exécution de la requête
                 liAffecte = lpst.executeUpdate();
                 // fermeture du pointeur
@@ -132,7 +135,7 @@ public class GenreDAO implements IDAO<Genre> {
     }
 
     @Override
-    public int update(Genre objet) {
+    public int update(Pays objet) {
         int liAffecte = 0;
         String lsSQL = "CALL genreUpdate(?, ?, ?, ?)";
         try {
@@ -140,10 +143,11 @@ public class GenreDAO implements IDAO<Genre> {
             PreparedStatement lpst = cnx.prepareStatement(lsSQL);
 
             // Valorisation des variables
-            lpst.setInt(1, objet.getIdGenre());
-            lpst.setString(2, objet.getCodeGenre());
-            lpst.setString(3, objet.getLibelleGenre());
-            lpst.setString(4, objet.getGenreGrammatical());
+            lpst.setInt(1, objet.getIdPays());
+            lpst.setString(2, objet.getNomPays());
+            lpst.setString(3, objet.getMasculin());
+            lpst.setString(4, objet.getFeminin());
+            lpst.setString(5, objet.getNeutre());
 
             // Exécution de la requete
             liAffecte = lpst.executeUpdate();
@@ -157,4 +161,5 @@ public class GenreDAO implements IDAO<Genre> {
         // renvoi du nombre de ligne affectée
         return liAffecte;
     }
+
 }
