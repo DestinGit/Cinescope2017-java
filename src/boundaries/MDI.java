@@ -7,7 +7,6 @@ package boundaries;
 
 import connexion.Connexion;
 import daos.Globale;
-import java.awt.Frame;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import javax.swing.JDesktopPane;

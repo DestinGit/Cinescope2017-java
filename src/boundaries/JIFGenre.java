@@ -19,9 +19,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JIFGenre extends javax.swing.JInternalFrame {
 
-    private Connection icnx;
-    private DefaultTableModel ldtm;
-    private GenreDAO dao;
+    private final Connection icnx;
+    private final DefaultTableModel ldtm;
+    private final GenreDAO dao;
 
     /**
      * Creates new form JIFGenre
@@ -41,6 +41,7 @@ public class JIFGenre extends javax.swing.JInternalFrame {
             tLigne[1] = rs.getCodeGenre();
             tLigne[2] = rs.getLibelleGenre();
             tLigne[3] = rs.getGenreGrammatical();
+            
             ldtm.addRow(tLigne);
         }
 

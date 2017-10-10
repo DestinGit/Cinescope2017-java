@@ -35,7 +35,7 @@ public class JIFPaysDelete extends javax.swing.JInternalFrame {
         keyAllCountries.stream().forEach((lr) -> {
             idcbm.addElement(lr);
         });
-
+        
         jComboBoxPays.setModel(idcbm);
 
         setVisible(true);
