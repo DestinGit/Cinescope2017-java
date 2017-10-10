@@ -30,32 +30,27 @@ public class DepartementDAO {
     public int insert(Departement d) {
         int liAffecte;
         try {
-            String lsSQL = "INSERT INTO departement(code_departement, nom_departement) VALUES (?,?)";
+            String lsSQL = "CALL departementInsert(?, ?)";
             PreparedStatement lpst = icnx.prepareStatement(lsSQL, Statement.RETURN_GENERATED_KEYS);
             lpst.setString(1, d.getCodeDepartement());
             lpst.setString(2, d.getNomDepartement());
             liAffecte = lpst.executeUpdate();
-//            icnx.commit();
+//            if (liAffecte > 0) {
+//                ResultSet lrsNouvelleCle = lpst.getGeneratedKeys();
+//                if (lrsNouvelleCle.next()) {
+//                    int liNewID = lrsNouvelleCle.getInt(1);
+//                    System.out.println(" liNewID : " + liNewID);
+//                }
+//            }
             lpst.close();
         } catch (SQLException e) {
             liAffecte = -1;
-            System.out.println("erreu INSERT : " + e.getMessage());
+            System.out.println("erreur INSERT : " + e.getMessage());
         }
 
         return liAffecte;
     } //insert
 
-//    public int getLastInsert() {
-//        int res = 0;
-//        String lsSQL = "SELECT LAST_INSERT_ID()";
-//        try{
-//            
-//        } catch (SQLException e) {
-//            res = -1;
-//            System.out.println("erreu INSERT : " + e.getMessage());
-//        }
-//        return res;
-//    }
     /**
      *
      * @param d
@@ -90,7 +85,7 @@ public class DepartementDAO {
      */
     public Departement selectOne(int id) {
         Departement d = new Departement();
-        String lsSQL = "SELECT * FROM departement WHERE id_departement = ? ";
+        String lsSQL = "CALL departementSelectOne(?)";
         try {
             // Préparation de la requete
             PreparedStatement lpst = icnx.prepareStatement(lsSQL);
@@ -100,13 +95,10 @@ public class DepartementDAO {
             ResultSet lrs = lpst.executeQuery();
             // test si resultat existe. Si oui, initialiser l'objet Departement
             if (lrs.next()) {
-//                d = new Departement(id, lrs.getString("code_departement"),
-//                lrs.getString("nom_departement"));
                 d.setIdDepartement(id);
                 d.setCodeDepartement(lrs.getString("code_departement"));
                 d.setNomDepartement(lrs.getString("nom_departement"));
             } else { // Si non, initialiser l'objet Departement avec les valeurs par défaut
-//                d = new Departement(0, "INTROUVALE", "INTROUVALE");
                 d.setIdDepartement(0);
                 d.setCodeDepartement("INTROUVALE");
                 d.setNomDepartement("INTROUVALE");
@@ -144,7 +136,7 @@ public class DepartementDAO {
                 // Sauvegarde des datas dans une liste
                 resultList.add(d);
             }
-            
+
             // Fermeture des pointeurs
             lrs.close();
             lpst.close();
@@ -165,15 +157,15 @@ public class DepartementDAO {
      */
     public int update(Departement d) {
         int liAffecte = 0;
-        String lsSQL = "UPDATE departement SET code_departement = ?, nom_departement = ? WHERE id_departement = ?";
+        String lsSQL = "CALL departementUpdate(?, ?, ?)";
         try {
             // Préparation de la requete
             PreparedStatement lpst = icnx.prepareStatement(lsSQL);
 
             // Valorisation des variables
-            lpst.setString(1, d.getCodeDepartement());
-            lpst.setString(2, d.getNomDepartement());
-            lpst.setInt(3, d.getIdDepartement());
+            lpst.setInt(1, d.getIdDepartement());
+            lpst.setString(2, d.getCodeDepartement());
+            lpst.setString(3, d.getNomDepartement());
 
             // Exécution de la requete
             liAffecte = lpst.executeUpdate();
