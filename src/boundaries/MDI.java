@@ -28,7 +28,7 @@ public class MDI extends javax.swing.JFrame {
         
         setTitle("MDI - Cinéscope 2017");
         setLocationRelativeTo(null);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
 
 //         icnx = Connexion.getConnectionMySQL("mysql-yemeialways.alwaysdata.net", "yemeialways_cine2017", "3306", "143657", "YemeiAlways@01");
@@ -248,6 +248,11 @@ public class MDI extends javax.swing.JFrame {
 
         jMenuItem15.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem15.setText("Films (Ajout)");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem15);
 
         menuBar.add(jMenu2);
@@ -315,11 +320,11 @@ public class MDI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
         );
 
         pack();
@@ -488,6 +493,12 @@ public class MDI extends javax.swing.JFrame {
         JIFMediaCRUD jif = new JIFMediaCRUD();
         this.desktopPane.add(jif);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        // TODO add your handling code here:
+        JIFNouveauFilm jif = new JIFNouveauFilm();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     /**
      * @param args the command line arguments
