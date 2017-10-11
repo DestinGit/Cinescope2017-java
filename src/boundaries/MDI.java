@@ -209,6 +209,11 @@ public class MDI extends javax.swing.JFrame {
         fileMenu.add(jSeparator2);
 
         jMenuItem8.setText("Media (CRUD)");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         fileMenu.add(jMenuItem8);
 
         jMenuItem9.setText("Appréciation (CRUD)");
@@ -477,6 +482,12 @@ public class MDI extends javax.swing.JFrame {
         JIFGenre jif = new JIFGenre();
         this.desktopPane.add(jif);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        JIFMediaCRUD jif = new JIFMediaCRUD();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
