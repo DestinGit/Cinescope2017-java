@@ -6,21 +6,27 @@
 package boundaries;
 
 import bdd.paysModel;
+import daos.Globale;
+import daos.PaysDAO;
+import entities.Pays;
+import java.sql.Connection;
 
 /**
  *
  * @author formation
  */
 public class JIFPaysAjout extends javax.swing.JInternalFrame {
-
+private Connection icnx;
+private PaysDAO dao;
     /**
      * Creates new form JIFPaysAjout
      */
     public JIFPaysAjout() {
         initComponents();
-        
-        resetFields();
-        jLabelMessage.setText(null);
+        icnx = Globale.getCnx();
+        dao = new PaysDAO(icnx);
+//        resetFields();
+//        jLabelMessage.setText(null);
         
         setVisible(true);
     }
@@ -54,19 +60,11 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Nom du pays");
 
-        jTextFieldNomPays.setText("jTextField1");
-
         jLabel2.setText("Masculin");
-
-        jTextFieldNomMasculin.setText("jTextField2");
 
         jLabel3.setText("Féminin");
 
-        jTextFieldNomFeminin.setText("jTextField3");
-
         jLabel4.setText("Neutre");
-
-        jTextFieldNomNeutre.setText("jTextField4");
 
         jButtonAjouter.setText("Ajouter");
         jButtonAjouter.addActionListener(new java.awt.event.ActionListener() {
@@ -146,10 +144,10 @@ public class JIFPaysAjout extends javax.swing.JInternalFrame {
             jLabelMessage.setText("Tous les champs sont obligatoires");
             
         } else { // No fields empty. Insertion in the database
-            paysModel pays = new paysModel();
+            Pays d = new Pays(jTextFieldNomPays.getText().toString(), jTextFieldNomMasculin.getText().toString(),
+            jTextFieldNomFeminin.getText().toString(), jTextFieldNomNeutre.getText().toString());
             
-            pays.insertData(jTextFieldNomPays.getText(), jTextFieldNomMasculin.getText(),
-                    jTextFieldNomFeminin.getText(), jTextFieldNomNeutre.getText());
+            dao.insert(d);
             
             jLabelMessage.setText("Le Pays " + jTextFieldNomPays.getText() + " a été rajouter avec succes");
             

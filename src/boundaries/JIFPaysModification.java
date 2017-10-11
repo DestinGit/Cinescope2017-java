@@ -205,6 +205,7 @@ public class JIFPaysModification extends javax.swing.JInternalFrame {
                 || jTextFieldFeminin.getText().isEmpty() || jTextFieldNomNeutre.getText().isEmpty()) {
             jLabelMessage.setText("Tous les champs sont obligatoires");
         } else {
+            
             pays.updateData(id, jTextFieldNomPays.getText().toString(), jTextFieldNomMasculin.getText().toString(),
                     jTextFieldFeminin.getText().toString(), jTextFieldNomNeutre.getText().toString()); 
             jLabelMessage.setText("Votre modification a été enregistrée");            

@@ -26,7 +26,7 @@ public class PaysDAO implements IDAO<Pays> {
     public int insert(Pays objet) {
         int liAffecte = 0;
 
-        String lsInsert = "INSERT INTO pays(NOM_pays, MASCULIN, FEMININ, NEUTRE) VALUES(?,?,?,?)";
+        String lsInsert = "CALL paysInsert(?,?,?,?)";
 
         try {
             // Preparation de la requête
@@ -82,7 +82,7 @@ public class PaysDAO implements IDAO<Pays> {
     @Override
     public Pays selectOne(int id) {
         Pays d = new Pays();
-        String lsSQL = "SELECT * FROM pays WHERE ID_pays = ?";
+        String lsSQL = "CALL paysSelectOne(?)";
         try {
             // Préparation de la requete
             PreparedStatement lpst = cnx.prepareStatement(lsSQL);
@@ -117,7 +117,7 @@ public class PaysDAO implements IDAO<Pays> {
     public int delete(Pays objet) {
         int liAffecte = 0;
         try {
-            String lsSQL = "DELETE FROM pays WHERE ID_pays = ?";
+            String lsSQL = "CALL paysDelete(?)";
             // Préparation de la requete
             try (PreparedStatement lpst = cnx.prepareStatement(lsSQL)) {
                 //  Valorisation de la variable
@@ -137,7 +137,7 @@ public class PaysDAO implements IDAO<Pays> {
     @Override
     public int update(Pays objet) {
         int liAffecte = 0;
-        String lsSQL = "CALL genreUpdate(?, ?, ?, ?)";
+        String lsSQL = "CALL paysUpdate(?,?,?,?,?)";
         try {
             // Préparation de la requete
             PreparedStatement lpst = cnx.prepareStatement(lsSQL);
@@ -157,7 +157,6 @@ public class PaysDAO implements IDAO<Pays> {
             liAffecte = -1;
             System.out.println("UPDATE : " + e.getMessage());
         }
-
         // renvoi du nombre de ligne affectée
         return liAffecte;
     }

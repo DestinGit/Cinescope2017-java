@@ -6,6 +6,9 @@
 package boundaries;
 
 import bdd.paysModel;
+import daos.Globale;
+import daos.PaysDAO;
+import entities.Pays;
 import java.sql.*;
 import java.util.List;
 import java.util.Map;
@@ -16,32 +19,44 @@ import javax.swing.table.DefaultTableModel;
  * @author formation
  */
 public class JIFPaysVisu extends javax.swing.JInternalFrame {
-
+private Connection icnx;
     /**
      * Creates new form JIFPaysVisu
      */
     public JIFPaysVisu() {
         initComponents();
 
-        Object[] tLigne;
+        Object[] tLigne = new Object[5];
         DefaultTableModel ldtm = (DefaultTableModel) jTablePays.getModel();
 
-        paysModel pays = new paysModel();
-        List<Map<String, String>> listCountries = pays.getAllData();
-        for (int i = 0; i < listCountries.size(); i++) {
-            tLigne = new Object[5];
-            Map<String, String> mapCountry = listCountries.get(i);
-
-            tLigne[0] = mapCountry.get("ID_pays");
-            tLigne[1] = mapCountry.get("NOM_pays");
-            tLigne[2] = mapCountry.get("MASCULIN");
-            tLigne[3] = mapCountry.get("FEMININ");
-            tLigne[4] = mapCountry.get("NEUTRE");
-
+        icnx = Globale.getCnx();
+        PaysDAO dao = new PaysDAO(icnx);
+        
+        List<Pays> p = dao.selectAll();
+        for(Pays rs:p){
+            tLigne[0] = rs.getIdPays();
+            tLigne[1] = rs.getNomPays();
+            tLigne[2] = rs.getMasculin();
+            tLigne[3] = rs.getFeminin();
+            tLigne[4] = rs.getNeutre();
             ldtm.addRow(tLigne);
         }
+//        paysModel pays = new paysModel();
+//        List<Map<String, String>> listCountries = pays.getAllData();
+//        for (int i = 0; i < listCountries.size(); i++) {
+//            tLigne = new Object[5];
+//            Map<String, String> mapCountry = listCountries.get(i);
+//
+//            tLigne[0] = mapCountry.get("ID_pays");
+//            tLigne[1] = mapCountry.get("NOM_pays");
+//            tLigne[2] = mapCountry.get("MASCULIN");
+//            tLigne[3] = mapCountry.get("FEMININ");
+//            tLigne[4] = mapCountry.get("NEUTRE");
+//
+//            ldtm.addRow(tLigne);
+//        }
         
-        jLabelMessage.setText("il y'a " + listCountries.size() + " pays ");
+        jLabelMessage.setText("il y'a " + p.size() + " pays ");
         setVisible(true);
     }
 
