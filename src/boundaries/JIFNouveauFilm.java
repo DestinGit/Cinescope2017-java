@@ -7,10 +7,13 @@ package boundaries;
 
 import daos.GenreDAO;
 import daos.Globale;
+import daos.PaysDAO;
 import entities.Genre;
+import entities.Pays;
 import java.sql.Connection;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,16 +23,26 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
     private final Connection icnx;
     private DefaultComboBoxModel genreCbx;
+    private DefaultTableModel paysTbl;
     /**
      * Creates new form JIFNouveauFilm
      */
     public JIFNouveauFilm() {
         initComponents();
+        // Récupérer la connexion
         icnx = Globale.getCnx();
+        // Afficher, dans le jComboBox, la liste de tous les genres
         loadGenre();
+        
+        // Afficher, dans le jTable, la liste des pays
+        loadListCountries();
+        
         setVisible(true);
     }
 
+    /**
+     * Afficher, dans le comboBox, la liste de tous les genres
+     */
     private void loadGenre() {
         GenreDAO dao;
         genreCbx = new DefaultComboBoxModel();
@@ -42,6 +55,27 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         jComboBoxGenre.setModel(genreCbx);
     }
 
+    /**
+     * Afficher, dans le jTable, la liste des pays
+     */
+    private void loadListCountries() {
+        PaysDAO dao;
+        Object[] tligne = new Object[5];
+        
+        paysTbl = (DefaultTableModel)jTablePays.getModel();
+        
+        dao = new PaysDAO(icnx);
+        List<Pays> result = dao.selectAll();
+        for(Pays rs:result) {
+            tligne[0] = rs.getIdPays();
+            tligne[1] = rs.getNomPays();
+            tligne[2] = rs.getMasculin();
+            tligne[3] = rs.getFeminin();
+            tligne[4] = rs.getNeutre();
+            
+            paysTbl.addRow(tligne);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,7 +210,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id Pays", "Nom Pays", "Masculin", "Feminin", "Neutre"
             }
         ));
         jScrollPane4.setViewportView(jTablePays);
