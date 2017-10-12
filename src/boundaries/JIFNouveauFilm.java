@@ -8,8 +8,10 @@ package boundaries;
 import daos.GenreDAO;
 import daos.Globale;
 import daos.PaysDAO;
+import daos.RubriqueDAO;
 import entities.Genre;
 import entities.Pays;
+import entities.Rubrique;
 import java.sql.Connection;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -23,6 +25,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
     private final Connection icnx;
     private DefaultComboBoxModel genreCbx;
+    private DefaultComboBoxModel rubricCbx;
     private DefaultTableModel paysTbl;
     /**
      * Creates new form JIFNouveauFilm
@@ -33,7 +36,8 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         icnx = Globale.getCnx();
         // Afficher, dans le jComboBox, la liste de tous les genres
         loadGenre();
-        
+        // Afficher, dans le jComboBox, la liste de toutes les rubriques
+        loadRubric();
         // Afficher, dans le jTable, la liste des pays
         loadListCountries();
         
@@ -55,6 +59,16 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         jComboBoxGenre.setModel(genreCbx);
     }
 
+    private void loadRubric() {
+        rubricCbx = new DefaultComboBoxModel();
+        
+        RubriqueDAO dao = new RubriqueDAO(icnx);
+        List<Rubrique> result = dao.selectAll();
+        for(Rubrique rs:result) {
+            rubricCbx.addElement(rs.getCodeRubrique());
+        }
+        jComboBoxRubrique.setModel(rubricCbx);
+    }
     /**
      * Afficher, dans le jTable, la liste des pays
      */
