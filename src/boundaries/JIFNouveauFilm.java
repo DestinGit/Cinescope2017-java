@@ -13,8 +13,13 @@ import entities.Genre;
 import entities.Pays;
 import entities.Rubrique;
 import java.sql.Connection;
+import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SpinnerDateModel;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,6 +45,25 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         loadRubric();
         // Afficher, dans le jTable, la liste des pays
         loadListCountries();
+        
+        Date nowDate = new Date();
+        SpinnerModel spMdlYears = new SpinnerDateModel(nowDate, null, null, Calendar.DATE);
+        jSpinnerAnneeProduction.setModel(spMdlYears);
+
+//        Calendar cal = Calendar.getInstance();
+//    Date now = cal.getTime();
+//    cal.add(Calendar.YEAR, -50);
+//    Date startDate = cal.getTime();
+//    cal.add(Calendar.YEAR, 100);
+//    Date endDate = cal.getTime();
+//    SpinnerModel model = new SpinnerDateModel(now, startDate, endDate, Calendar.YEAR);
+//    jSpinnerAnneeProduction.setModel(model);
+    
+        SpinnerModel spMdlHours = new SpinnerNumberModel(0, 0, 23, 1);
+        jSpinnerDureeHeure.setModel(spMdlHours);
+        
+        SpinnerModel spMdlMinutes = new SpinnerNumberModel(0, 0, 59, 1);
+        jSpinnerDureeMinute.setModel(spMdlMinutes);
         
         setVisible(true);
     }
