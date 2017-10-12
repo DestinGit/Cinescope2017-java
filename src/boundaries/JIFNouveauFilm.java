@@ -3,8 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package boundaries;
+
+import daos.GenreDAO;
+import daos.Globale;
+import entities.Genre;
+import java.sql.Connection;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -12,13 +18,28 @@ package boundaries;
  */
 public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
+    private final Connection icnx;
+    private DefaultComboBoxModel genreCbx;
     /**
      * Creates new form JIFNouveauFilm
      */
     public JIFNouveauFilm() {
         initComponents();
-        
+        icnx = Globale.getCnx();
+        loadGenre();
         setVisible(true);
+    }
+
+    private void loadGenre() {
+        GenreDAO dao;
+        genreCbx = new DefaultComboBoxModel();
+        
+        dao = new GenreDAO(icnx);
+        List<Genre> result = dao.selectAll();
+        for(Genre rs:result) {
+            genreCbx.addElement(rs.getLibelleGenre());
+        }
+        jComboBoxGenre.setModel(genreCbx);
     }
 
     /**
@@ -123,8 +144,6 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         jLabel14.setText("Genre");
 
         jLabel15.setText("Rubrique");
-
-        jComboBoxGenre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jComboBoxRubrique.setEnabled(false);
 

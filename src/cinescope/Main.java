@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package cinescope2017;
+package cinescope;
 
 import boundaries.MDI;
 

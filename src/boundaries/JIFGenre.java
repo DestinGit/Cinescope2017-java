@@ -33,7 +33,7 @@ public class JIFGenre extends javax.swing.JInternalFrame {
 
         icnx = Globale.getCnx();
         Object[] tLigne = new Object[4];
-        // Récupérer tous les départements
+        // Récupérer tous les Genres
         dao = new GenreDAO(icnx);
         List<Genre> result = dao.selectAll();
         for (Genre rs : result) {

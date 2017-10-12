@@ -34,7 +34,7 @@ public class MDI extends javax.swing.JFrame {
 //         icnx = Connexion.getConnectionMySQL("mysql-yemeialways.alwaysdata.net", "yemeialways_cine2017", "3306", "143657", "YemeiAlways@01");
          icnx = Connexion.getConnectionMySQL("127.0.0.1", "cinescope2017", "3306", "root", "");
          Globale.setCnx(icnx);
-         
+
 //        openMenuItemActionPerformed(null);
 //        saveMenuItemActionPerformed(null);
 //        supMenuItemActionPerformed(null);
@@ -324,7 +324,7 @@ public class MDI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
         );
 
         pack();
