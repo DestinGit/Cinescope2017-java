@@ -579,7 +579,6 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
          tLigne[4] = "";
          
          paysTbl.addRow(tLigne);
-//         jTableActeurs
         
         System.out.println(lsTab[getSelectedTab()]);
     }//GEN-LAST:event_jButtonPlusActionPerformed
