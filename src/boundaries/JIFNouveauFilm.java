@@ -70,23 +70,29 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         SpinnerModel spMdlMinutes = new SpinnerNumberModel(0, 0, 59, 1);
         jSpinnerDureeMinute.setModel(spMdlMinutes);
 
+        // Charger la liste des choix en fonction de la selection de l'onglet
         loadListChoice();
 
         setVisible(true);
     }
 
+    /**
+     * Affiche la liste de choix correspondante
+     */
     private void loadListChoice() {
-        if (listchoiceTable_was_touched) {
+        // tester si la variable "listchoiceTable" a déjà été initialisée
+        if (listchoiceTable_was_touched) { // si oui, on vide le tableau
             for (int i = listchoiceTable.getRowCount() - 1; i >= 0; i--) {
                 listchoiceTable.removeRow(i);
             }
         }
 
-        // System.out.println(listchoiceTable.getRowCount());
+        // Selon l'onglet selectionné dans jTabbepane
+        // on affiche la liste de choix correspondante
         switch (getSelectedTab()) {
             case 0:
             case 1:
-                listArtist();
+                listChoiceArtist();
                 break;
             case 2:
                 listChoiceCounties();
@@ -94,16 +100,18 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
             default:
                 break;
         }
-
     }
 
-    private void listArtist() {
+    /**
+     * Afficher la liste des Artistes
+     */
+    private void listChoiceArtist() {
         ArtisteDAO dao = new ArtisteDAO(icnx);
 
         Object[] tLigne = new Object[2];
         listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
         listchoiceTable_was_touched = true;
-        
+
         List<Artiste> result = dao.selectAll();
 
         for (Artiste rs : result) {
@@ -114,13 +122,16 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Afficher la liste des choix de Pqys
+     */
     private void listChoiceCounties() {
         PaysDAO dao = new PaysDAO(icnx);
         Object[] tLigne = new Object[2];
 
         listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
         listchoiceTable_was_touched = true;
-        
+
         List<Pays> result = dao.selectAll();
         for (Pays rs : result) {
             tLigne[0] = rs.getIdPays();
@@ -298,7 +309,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Film", "Acteur", "Rang acteur", "Voix"
             }
         ));
         jScrollPane2.setViewportView(jTableActeurs);
@@ -310,7 +321,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Artiste", "ID Film", "Rang réalisateur"
             }
         ));
         jScrollPane3.setViewportView(jTableRealisateurs);
@@ -334,7 +345,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID Film", "ID Salle", "Version projection", "Horaire projection"
             }
         ));
         jScrollPane5.setViewportView(jTableProjections);
@@ -558,18 +569,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
         // TODO add your handling code here:
-//        switch (getSelectedTab()) {
-//            case 0:             
-//                break;
-//            case 1:
-//                break;
-//            case 2:
-//                break;
-//            case 3:
-//                break;
-//            default:
-//                break;
-//        }
+        
         System.out.println(lsTab[getSelectedTab()]);
     }//GEN-LAST:event_jButtonPlusActionPerformed
 
