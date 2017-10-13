@@ -569,6 +569,17 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
         // TODO add your handling code here:
+        int liRow = jTableListChoice.getSelectedRow();
+         Object[] tLigne = new Object[5];
+         System.out.println(liRow);
+         tLigne[0] = jTableListChoice.getValueAt(liRow, 0);
+         tLigne[1] = jTableListChoice.getValueAt(liRow, 1);
+         tLigne[2] = "";
+         tLigne[3] = "";
+         tLigne[4] = "";
+         
+         paysTbl.addRow(tLigne);
+//         jTableActeurs
         
         System.out.println(lsTab[getSelectedTab()]);
     }//GEN-LAST:event_jButtonPlusActionPerformed
