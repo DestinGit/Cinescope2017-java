@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -36,18 +37,27 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private final Connection icnx;
     private DefaultComboBoxModel genreCbx;
     private DefaultComboBoxModel rubricCbx;
-    private DefaultTableModel paysTbl;
-    private DefaultTableModel listchoiceTable;
-    private boolean listchoiceTable_was_touched = false;
-    private String[] lsTab = {"acteurs", "realisateurs", "pays", "projections"};
+    private DefaultTableModel paysTbl, acteursTbl, realisateursTbl, projectionsTbl;
+    private DefaultTableModel listChoiceTable;
+    private boolean listChoiceTable_was_touched = false;
+    private String[] lsColors = {"Couleurs", "Noi et blanc"};
+    private String[] publicAllow = {
+        "Tous public", "Public adulte", "Jeune public"
+    };
+    private String[] publicForbidden = {"Aucune", "-18", "-16", "- 12 ans"};
 
     /**
      * Creates new form JIFNouveauFilm
      */
     public JIFNouveauFilm() {
         initComponents();
+        
+        initTableModelVars();
         // Récupérer la connexion
         icnx = Globale.getCnx();
+
+        // Afficher, dans le jComboBox, la liste couleurs
+        loadColorsList();
         // Afficher, dans le jComboBox, la liste de tous les genres
         loadGenre();
         // Afficher, dans le jComboBox, la liste de toutes les rubriques
@@ -72,32 +82,45 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         SpinnerModel spMdlMinutes = new SpinnerNumberModel(0, 0, 59, 1);
         jSpinnerDureeMinute.setModel(spMdlMinutes);
 
+        // Afficher, dans le SpinnerListModel, la liste du public autorisé
+        SpinnerListModel spMdlAllow = new SpinnerListModel(publicAllow);
+        jSpinnerPublic.setModel(spMdlAllow);
+
+        // Afficher, dans le SpinnerListModel, la liste du public autorisé
+        SpinnerListModel spMdlForbidden = new SpinnerListModel(publicForbidden);
+        jSpinnerInterdiction.setModel(spMdlForbidden);
+
         // Charger la liste des choix en fonction de la selection de l'onglet
         loadListChoice();
 //initialiseGenreList();
         setVisible(true);
     }
 
-    private void initialiseGenreList() {
-        GenreDAO dao = new GenreDAO(icnx);
-        genreCbx = new DefaultComboBoxModel();
-
-        List<Genre> result = dao.selectAll();
-        for (Genre rs : result) {
-            genreCbx.addElement(rs.getLibelleGenre());
-        }
-
-        jComboBoxGenre.setModel(genreCbx);
+    private void initTableModelVars() {
+        acteursTbl = (DefaultTableModel) jTableActeurs.getModel();
+        realisateursTbl = (DefaultTableModel) jTableRealisateurs.getModel();
+        paysTbl = (DefaultTableModel) jTablePays.getModel();
+        projectionsTbl = (DefaultTableModel) jTableProjections.getModel();        
     }
-
+//    private void initialiseGenreList() {
+//        GenreDAO dao = new GenreDAO(icnx);
+//        genreCbx = new DefaultComboBoxModel();
+//
+//        List<Genre> result = dao.selectAll();
+//        for (Genre rs : result) {
+//            genreCbx.addElement(rs.getLibelleGenre());
+//        }
+//
+//        jComboBoxGenre.setModel(genreCbx);
+//    }
     /**
      * Affiche la liste de choix correspondante
      */
     private void loadListChoice() {
-        // tester si la variable "listchoiceTable" a déjà été initialisée
-        if (listchoiceTable_was_touched) { // si oui, on vide le tableau
-            for (int i = listchoiceTable.getRowCount() - 1; i >= 0; i--) {
-                listchoiceTable.removeRow(i);
+        // tester si la variable "listChoiceTable" a déjà été initialisée
+        if (listChoiceTable_was_touched) { // si oui, on vide le tableau
+            for (int i = listChoiceTable.getRowCount() - 1; i >= 0; i--) {
+                listChoiceTable.removeRow(i);
             }
         }
 
@@ -130,15 +153,15 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private void listChoiceSalle() {
         SalleDAO dao = new SalleDAO(icnx);
         Object[] tLigne = new Object[2];
-        listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
-        listchoiceTable_was_touched = true;
+        listChoiceTable = (DefaultTableModel) jTableListChoice.getModel();
+        listChoiceTable_was_touched = true;
 
         List<Salle> result = dao.selectAll();
         for (Salle rs : result) {
             tLigne[0] = rs.getIdSalle();
             tLigne[1] = rs.getNomSalle();
 
-            listchoiceTable.addRow(tLigne);
+            listChoiceTable.addRow(tLigne);
         }
     }
 
@@ -149,8 +172,8 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         ArtisteDAO dao = new ArtisteDAO(icnx);
 
         Object[] tLigne = new Object[2];
-        listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
-        listchoiceTable_was_touched = true;
+        listChoiceTable = (DefaultTableModel) jTableListChoice.getModel();
+        listChoiceTable_was_touched = true;
 
         List<Artiste> result = dao.selectAll();
 
@@ -158,7 +181,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
             tLigne[0] = rs.getIdArtiste();
             tLigne[1] = rs.getNomArtiste();
 
-            listchoiceTable.addRow(tLigne);
+            listChoiceTable.addRow(tLigne);
         }
     }
 
@@ -166,14 +189,14 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         ProduireDAO dao = new ProduireDAO(icnx);
         Object[] tLigne = new Object[2];
 
-        listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
-        listchoiceTable_was_touched = true;
+        listChoiceTable = (DefaultTableModel) jTableListChoice.getModel();
+        listChoiceTable_was_touched = true;
 
         List<Produire> result = dao.selectAll();
         for (Produire rs : result) {
             tLigne[0] = rs.getIdPays();
             tLigne[1] = rs.getRangProduction();
-            listchoiceTable.addRow(tLigne);
+            listChoiceTable.addRow(tLigne);
         }
     }
 
@@ -184,17 +207,23 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         PaysDAO dao = new PaysDAO(icnx);
         Object[] tLigne = new Object[2];
 
-        listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
-        listchoiceTable_was_touched = true;
+        listChoiceTable = (DefaultTableModel) jTableListChoice.getModel();
+        listChoiceTable_was_touched = true;
 
         List<Pays> result = dao.selectAll();
         for (Pays rs : result) {
             tLigne[0] = rs.getIdPays();
             tLigne[1] = rs.getNomPays();
 
-            listchoiceTable.addRow(tLigne);
+            listChoiceTable.addRow(tLigne);
         }
 
+    }
+
+    private void loadColorsList() {
+        for (int i = 0; i < lsColors.length; i++) {
+            jComboBoxCouleurs.addItem(lsColors[i]);
+        }
     }
 
     /**
@@ -279,8 +308,8 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jSpinnerCouleurs = new javax.swing.JSpinner();
-        jSpinnerInerdiction = new javax.swing.JSpinner();
+        jSpinnerInterdiction = new javax.swing.JSpinner();
+        jSpinnerPublic = new javax.swing.JSpinner();
         jComboBoxCouleurs = new javax.swing.JComboBox();
         jComboBoxRubrique = new javax.swing.JComboBox();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -417,6 +446,11 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         });
 
         jButtonMoins.setText(">>");
+        jButtonMoins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMoinsActionPerformed(evt);
+            }
+        });
 
         jButtonNouveau.setText("Nouveau");
 
@@ -465,7 +499,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jSpinnerDureeMinute, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -491,33 +525,35 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(38, 38, 38)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel11))
-                                        .addGap(72, 72, 72)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBoxCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(32, 32, 32)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jSpinnerInerdiction, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                                    .addComponent(jComboBoxGenre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                .addGap(116, 116, 116)
+                                                .addComponent(jLabel11)
+                                                .addGap(72, 72, 72)
+                                                .addComponent(jComboBoxCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(jSpinnerCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                .addComponent(jButtonNouveau)
-                                                                .addComponent(jButtonMoins, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(jButtonPlus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                            .addComponent(jComboBoxRubrique, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(72, 72, 72)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jSpinnerPublic)
+                                                    .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(122, 122, 122)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jSpinnerInterdiction, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                        .addComponent(jButtonNouveau)
+                                                        .addComponent(jButtonMoins, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButtonPlus, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addComponent(jComboBoxRubrique, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -560,32 +596,35 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                     .addComponent(jLabel9))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jSpinnerInerdiction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel14)
-                            .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(jSpinnerCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSpinnerInterdiction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
                             .addComponent(jComboBoxRubrique, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(4, 4, 4)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBoxCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(18, 18, 18)
+                        .addGap(42, 42, 42))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel11))
+                            .addComponent(jComboBoxCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jSpinnerPublic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -604,7 +643,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                                 .addGap(40, 40, 40)))))
                 .addGap(29, 29, 29)
                 .addComponent(jButtonAjouter, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
@@ -625,20 +664,100 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
         // TODO add your handling code here:
         int liRow = jTableListChoice.getSelectedRow();
-        Object[] tLigne = new Object[5];
-        System.out.println(liRow);
-        tLigne[0] = jTableListChoice.getValueAt(liRow, 0);
-        tLigne[1] = jTableListChoice.getValueAt(liRow, 1);
-        tLigne[2] = "";
-        tLigne[3] = "";
-        tLigne[4] = "";
 
-        paysTbl.addRow(tLigne);
+        if (liRow > -1) {
+            Object[] tLigne = new Object[getTableNbColumn()];
+            for (int i = 0; i < tLigne.length; i++) {
+                if (i == 1) {
+                    tLigne[i] = jTableListChoice.getValueAt(liRow, 0);
+                }
+            }
 
-        System.out.println(lsTab[getSelectedTab()]);
+            addRowInTableModel(tLigne);
+        }
     }//GEN-LAST:event_jButtonPlusActionPerformed
 
+    private void jButtonMoinsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoinsActionPerformed
+        // TODO add your handling code here:
+        int liRow;
+        switch (getSelectedTab()) {
+            case 0:
+                liRow = jTableActeurs.getSelectedRow();
+                if(liRow > -1){
+                    acteursTbl.removeRow(liRow);
+                }
+                break;
+            case 1:
+                liRow = jTableRealisateurs.getSelectedRow();
+                if(liRow > -1){
+                    realisateursTbl.removeRow(liRow);
+                }
+                break;
+            case 2:
+                liRow = jTablePays.getSelectedRow();
+                if(liRow > -1){
+                    paysTbl.removeRow(liRow);
+                }
+                break;
+            case 3:
+                liRow = jTableProjections.getSelectedRow();
+                if(liRow > -1){
+                    projectionsTbl.removeRow(liRow);
+                }
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_jButtonMoinsActionPerformed
 
+    /**
+     *
+     * @param tLigne
+     */
+    private void addRowInTableModel(Object[] tLigne) {
+        
+        switch (getSelectedTab()) {
+            case 0:
+                acteursTbl.addRow(tLigne);
+                break;
+            case 1:
+                realisateursTbl.addRow(tLigne);
+                break;
+            case 2:
+                paysTbl.addRow(tLigne);
+                break;
+            case 3:
+                projectionsTbl.addRow(tLigne);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    private int getTableNbColumn() {
+        int nbColumn = 0;
+        switch (getSelectedTab()) {
+            case 0:
+                nbColumn = jTableActeurs.getColumnCount();
+                break;
+            case 1:
+                nbColumn = jTableRealisateurs.getColumnCount();
+                break;
+            case 2:
+                nbColumn = jTablePays.getColumnCount();
+                break;
+            case 3:
+                nbColumn = jTableProjections.getColumnCount();
+                break;
+            default:
+                break;
+        }
+        return nbColumn;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAjouter;
     private javax.swing.JButton jButtonMoins;
@@ -671,11 +790,11 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JSpinner jSpinnerAnneeProduction;
-    private javax.swing.JSpinner jSpinnerCouleurs;
     private javax.swing.JSpinner jSpinnerDureeHeure;
     private javax.swing.JSpinner jSpinnerDureeMinute;
-    private javax.swing.JSpinner jSpinnerInerdiction;
+    private javax.swing.JSpinner jSpinnerInterdiction;
     private javax.swing.JSpinner jSpinnerNombreSemaine;
+    private javax.swing.JSpinner jSpinnerPublic;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableActeurs;
     private javax.swing.JTable jTableListChoice;
