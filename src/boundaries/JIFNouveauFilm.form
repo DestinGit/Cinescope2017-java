@@ -95,11 +95,11 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jComboBoxGenre" min="-2" pref="120" max="-2" attributes="0"/>
+                                          <Component id="jComboBoxCouleurs" min="-2" pref="120" max="-2" attributes="0"/>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jSpinnerInerdiction" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
-                                                  <Component id="jSpinnerPublic" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="jSpinnerInerdiction" pref="120" max="32767" attributes="0"/>
+                                                  <Component id="jComboBoxGenre" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
@@ -191,11 +191,11 @@
                           <Component id="jSpinnerInerdiction" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jSpinnerPublic" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBoxGenre" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -211,7 +211,7 @@
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jComboBoxGenre" min="-2" max="-2" attributes="0"/>
+                  <Component id="jComboBoxCouleurs" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -238,7 +238,7 @@
               </Group>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="jButtonAjouter" min="-2" pref="35" max="-2" attributes="0"/>
-              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <EmptySpace pref="28" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -365,9 +365,7 @@
     </Component>
     <Component class="javax.swing.JSpinner" name="jSpinnerInerdiction">
     </Component>
-    <Component class="javax.swing.JSpinner" name="jSpinnerPublic">
-    </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBoxGenre">
+    <Component class="javax.swing.JComboBox" name="jComboBoxCouleurs">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
@@ -465,8 +463,8 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="3" rowCount="0">
-                    <Column editable="true" title="ID Artiste" type="java.lang.Object"/>
                     <Column editable="true" title="ID Film" type="java.lang.Object"/>
+                    <Column editable="true" title="R&#xe9;alisateur" type="java.lang.Object"/>
                     <Column editable="true" title="Rang r&#xe9;alisateur" type="java.lang.Object"/>
                   </Table>
                 </Property>
@@ -513,26 +511,14 @@
             <Component class="javax.swing.JTable" name="jTablePays">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="0">
-                    <Column editable="true" title="Id Pays" type="java.lang.Object"/>
-                    <Column editable="true" title="Nom Pays" type="java.lang.Object"/>
-                    <Column editable="true" title="Masculin" type="java.lang.Object"/>
-                    <Column editable="true" title="Feminin" type="java.lang.Object"/>
-                    <Column editable="true" title="Neutre" type="java.lang.Object"/>
+                  <Table columnCount="3" rowCount="0">
+                    <Column editable="true" title="Id Film" type="java.lang.Object"/>
+                    <Column editable="true" title="Pays" type="java.lang.Object"/>
+                    <Column editable="true" title="Rang Production" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -576,7 +562,7 @@
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="0">
                     <Column editable="true" title="ID Film" type="java.lang.Object"/>
-                    <Column editable="true" title="ID Salle" type="java.lang.Object"/>
+                    <Column editable="true" title="Salle" type="java.lang.Object"/>
                     <Column editable="true" title="Version projection" type="java.lang.Object"/>
                     <Column editable="true" title="Horaire projection" type="java.lang.Object"/>
                   </Table>
@@ -688,5 +674,15 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JComboBox" name="jComboBoxGenre">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
   </SubComponents>
 </Form>

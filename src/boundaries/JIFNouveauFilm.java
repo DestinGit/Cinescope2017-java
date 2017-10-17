@@ -9,18 +9,20 @@ import daos.ArtisteDAO;
 import daos.GenreDAO;
 import daos.Globale;
 import daos.PaysDAO;
+import daos.ProduireDAO;
 import daos.RubriqueDAO;
+import daos.SalleDAO;
 import entities.Artiste;
 import entities.Genre;
 import entities.Pays;
+import entities.Produire;
 import entities.Rubrique;
+import entities.Salle;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Calendar;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
@@ -51,7 +53,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         // Afficher, dans le jComboBox, la liste de toutes les rubriques
         loadRubric();
         // Afficher, dans le jTable, la liste des pays
-        loadListCountries();
+//        loadListCountries();
 
 //        Date nowDate = new Date();
 //        SpinnerModel spMdlYears = new SpinnerDateModel(nowDate, null, null, Calendar.DATE);
@@ -72,8 +74,20 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
         // Charger la liste des choix en fonction de la selection de l'onglet
         loadListChoice();
-
+//initialiseGenreList();
         setVisible(true);
+    }
+
+    private void initialiseGenreList() {
+        GenreDAO dao = new GenreDAO(icnx);
+        genreCbx = new DefaultComboBoxModel();
+
+        List<Genre> result = dao.selectAll();
+        for (Genre rs : result) {
+            genreCbx.addElement(rs.getLibelleGenre());
+        }
+
+        jComboBoxGenre.setModel(genreCbx);
     }
 
     /**
@@ -89,16 +103,42 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
         // Selon l'onglet selectionné dans jTabbepane
         // on affiche la liste de choix correspondante
-        switch (getSelectedTab()) {
+        int choice = getSelectedTab();
+        switch (choice) {
             case 0:
             case 1:
+                jLabelList.setText("Liste des Artistes");
                 listChoiceArtist();
                 break;
             case 2:
+                jLabelList.setText("Liste des Pays");
                 listChoiceCounties();
+//                listChoiceProduire();
+                break;
+            case 3:
+                jLabelList.setText("Liste des Projections");
+                listChoiceSalle();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     *
+     */
+    private void listChoiceSalle() {
+        SalleDAO dao = new SalleDAO(icnx);
+        Object[] tLigne = new Object[2];
+        listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
+        listchoiceTable_was_touched = true;
+
+        List<Salle> result = dao.selectAll();
+        for (Salle rs : result) {
+            tLigne[0] = rs.getIdSalle();
+            tLigne[1] = rs.getNomSalle();
+
+            listchoiceTable.addRow(tLigne);
         }
     }
 
@@ -118,6 +158,21 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
             tLigne[0] = rs.getIdArtiste();
             tLigne[1] = rs.getNomArtiste();
 
+            listchoiceTable.addRow(tLigne);
+        }
+    }
+
+    private void listChoiceProduire() {
+        ProduireDAO dao = new ProduireDAO(icnx);
+        Object[] tLigne = new Object[2];
+
+        listchoiceTable = (DefaultTableModel) jTableListChoice.getModel();
+        listchoiceTable_was_touched = true;
+
+        List<Produire> result = dao.selectAll();
+        for (Produire rs : result) {
+            tLigne[0] = rs.getIdPays();
+            tLigne[1] = rs.getRangProduction();
             listchoiceTable.addRow(tLigne);
         }
     }
@@ -226,8 +281,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jSpinnerCouleurs = new javax.swing.JSpinner();
         jSpinnerInerdiction = new javax.swing.JSpinner();
-        jSpinnerPublic = new javax.swing.JSpinner();
-        jComboBoxGenre = new javax.swing.JComboBox();
+        jComboBoxCouleurs = new javax.swing.JComboBox();
         jComboBoxRubrique = new javax.swing.JComboBox();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -247,6 +301,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
         jLabelList = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTableListChoice = new javax.swing.JTable();
+        jComboBoxGenre = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -321,7 +376,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID Artiste", "ID Film", "Rang réalisateur"
+                "ID Film", "Réalisateur", "Rang réalisateur"
             }
         ));
         jScrollPane3.setViewportView(jTableRealisateurs);
@@ -333,7 +388,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id Pays", "Nom Pays", "Masculin", "Feminin", "Neutre"
+                "Id Film", "Pays", "Rang Production"
             }
         ));
         jScrollPane4.setViewportView(jTablePays);
@@ -345,7 +400,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID Film", "ID Salle", "Version projection", "Horaire projection"
+                "ID Film", "Salle", "Version projection", "Horaire projection"
             }
         ));
         jScrollPane5.setViewportView(jTableProjections);
@@ -443,11 +498,11 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                                             .addComponent(jLabel11))
                                         .addGap(72, 72, 72)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBoxCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jSpinnerInerdiction, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jSpinnerPublic, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jSpinnerInerdiction, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                                    .addComponent(jComboBoxGenre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addGap(116, 116, 116)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(layout.createSequentialGroup()
@@ -514,10 +569,10 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                             .addComponent(jLabel13)
                             .addComponent(jSpinnerInerdiction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinnerPublic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
-                        .addGap(18, 18, 18))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
@@ -528,7 +583,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                             .addComponent(jComboBoxRubrique, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(4, 4, 4)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxCouleurs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -549,7 +604,7 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
                                 .addGap(40, 40, 40)))))
                 .addGap(29, 29, 29)
                 .addComponent(jButtonAjouter, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
@@ -570,16 +625,16 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private void jButtonPlusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlusActionPerformed
         // TODO add your handling code here:
         int liRow = jTableListChoice.getSelectedRow();
-         Object[] tLigne = new Object[5];
-         System.out.println(liRow);
-         tLigne[0] = jTableListChoice.getValueAt(liRow, 0);
-         tLigne[1] = jTableListChoice.getValueAt(liRow, 1);
-         tLigne[2] = "";
-         tLigne[3] = "";
-         tLigne[4] = "";
-         
-         paysTbl.addRow(tLigne);
-        
+        Object[] tLigne = new Object[5];
+        System.out.println(liRow);
+        tLigne[0] = jTableListChoice.getValueAt(liRow, 0);
+        tLigne[1] = jTableListChoice.getValueAt(liRow, 1);
+        tLigne[2] = "";
+        tLigne[3] = "";
+        tLigne[4] = "";
+
+        paysTbl.addRow(tLigne);
+
         System.out.println(lsTab[getSelectedTab()]);
     }//GEN-LAST:event_jButtonPlusActionPerformed
 
@@ -589,7 +644,8 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonMoins;
     private javax.swing.JButton jButtonNouveau;
     private javax.swing.JButton jButtonPlus;
-    private javax.swing.JComboBox jComboBoxGenre;
+    private javax.swing.JComboBox jComboBoxCouleurs;
+    private javax.swing.JComboBox<String> jComboBoxGenre;
     private javax.swing.JComboBox jComboBoxRubrique;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -620,7 +676,6 @@ public class JIFNouveauFilm extends javax.swing.JInternalFrame {
     private javax.swing.JSpinner jSpinnerDureeMinute;
     private javax.swing.JSpinner jSpinnerInerdiction;
     private javax.swing.JSpinner jSpinnerNombreSemaine;
-    private javax.swing.JSpinner jSpinnerPublic;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableActeurs;
     private javax.swing.JTable jTableListChoice;
