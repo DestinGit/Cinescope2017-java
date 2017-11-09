@@ -31,8 +31,8 @@ public class MDI extends javax.swing.JFrame {
 //        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
 
-//         icnx = Connexion.getConnectionMySQL("127.0.0.1", "cinescope2017", "3306", "root", "");
-         icnx = Connexion.getConnectionMySQL("172.26.10.166", "cinescope2017", "3306", "p", "b");
+         icnx = Connexion.getConnectionMySQL("172.26.55.55", "cinescope2014", "3306", "p", "b");
+//         icnx = Connexion.getConnectionMySQL("172.26.10.166", "cinescope2017", "3306", "p", "b");
          Globale.setCnx(icnx);
 
 //        openMenuItemActionPerformed(null);
@@ -205,6 +205,11 @@ public class MDI extends javax.swing.JFrame {
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.SHIFT_MASK));
         jMenuItem7.setText("Rubriques CRUD");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         fileMenu.add(jMenuItem7);
         fileMenu.add(jSeparator2);
 
@@ -224,6 +229,11 @@ public class MDI extends javax.swing.JFrame {
         fileMenu.add(jSeparator4);
 
         jMenuItem11.setText("Cinémas (Ajout)");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         fileMenu.add(jMenuItem11);
         fileMenu.add(jSeparator5);
 
@@ -499,6 +509,18 @@ public class MDI extends javax.swing.JFrame {
         JIFNouveauFilm jif = new JIFNouveauFilm();
         this.desktopPane.add(jif);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // TODO add your handling code here:
+        JIFCinema jif = new JIFCinema();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        JIFRubriques jif = new JIFRubriques();
+        this.desktopPane.add(jif);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
